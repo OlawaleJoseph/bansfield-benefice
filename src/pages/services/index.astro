@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
+import RowLink from '../../components/RowLink.astro';
+import RotaCard from '../../components/RotaCard.astro';
+import { SERVICES_CALENDAR } from '../../data/site';
+
+const rotas = await getCollection('rotas');
+
+const resources = [
+  { title: 'The Christian year', text: 'Seasons and festivals, with dates', href: '/services/dates.html' },
+  { title: 'Lectionary (Common Worship)', text: 'Readings for every Sunday', href: '/services/lectionary.html' },
+  { title: 'Lectionary (Book of Common Prayer)', text: 'Traditional readings', href: '/services/lectionarybcp.html' },
+  { title: 'Special services', text: 'Christingle, Remembrance and seasonal services', href: '/services/special/' },
+  { title: 'Music and hymns', text: 'What we sing and why', href: '/services/music.html' },
+  { title: 'Sermons', text: 'Read or listen again', href: '/services/sermons.html' },
+];
+const commonWorship = [
+  ['Calendar', '0–17', 'p1_calendar0-17.pdf'], ['Prayer', '18–153', 'p2_prayer18-153.pdf'],
+  ['Holy Communion', '154–335', 'p3_communion154-335.pdf'], ['Initiation', '336–373', 'p4_initiation336-373.pdf'],
+  ['Collects', '374–523', 'p5_collects374-523.pdf'], ['Lectionary', '524–591', 'p6_lectionary524-591.pdf'],
+  ['Psalter', '592–773', 'p7_psalter592-773.pdf'], ['Canticles', '774–end', 'p8_canticles774-end.pdf'],
+];
+---
+<BaseLayout title="Services" nav="services" description="Service rotas for the seven churches of the Bansfield Benefice, with lectionary readings and Common Worship texts.">
+  <PageHero title="Services" trail={[{ label: 'Services' }]}
+    lede="Our services move between the seven churches through the month. Open the rota to see what's on, where and when. Everyone is welcome." />
+
+  <section class="section">
+    <div class="wrap">
+      <h2 style="margin-bottom:24px">Service rotas</h2>
+      <div class="grid g-300">
+        {rotas.map((r, i) => <RotaCard rota={r.data} first={i === 0} variant="services" />)}
+      </div>
+      <p class="form-note" style="margin-top:16px">Rotas open as Google Docs. You can also see <a href="#this-week">services this week</a> in our calendar.</p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap grid g-260">
+      <div class="panel"><h3>Two forms of worship</h3><p>Depending on the service and the church, we use <a href="https://www.churchofengland.org/prayer-and-worship/worship-texts-and-resources/common-worship">Common Worship</a> (CW) or the <a href="https://www.churchofengland.org/prayer-and-worship/worship-texts-and-resources/book-common-prayer">Book of Common Prayer</a> (BCP).</p></div>
+      <div class="panel"><h3>Readings for each Sunday</h3><p>Our readings follow the Church of England's three-year cycle of Years A, B and C. The <a href="https://en.wikipedia.org/wiki/Liturgical_colours">liturgical colours</a> mark the seasons and festivals.</p></div>
+      <div class="panel"><h3>First time?</h3><p>There's no need to book or dress up. Just come along, and someone will help you find your place.</p></div>
+    </div>
+  </section>
+
+  <section class="section-tight" id="this-week">
+    <div class="wrap split">
+      <div class="main">
+        <h2>Services this week</h2>
+        <p class="section-intro">The main services across the Benefice this week.</p>
+        <iframe src={SERVICES_CALENDAR} title="Services this week" loading="lazy" style="width:100%;height:420px;border:1px solid var(--line);border-radius:12px;background:#fff"></iframe>
+      </div>
+      <div class="side"><Photo src="/images/services/services_500.jpg" alt="Candles lit for a service" /></div>
+    </div>
+  </section>
+
+  <section class="section-tight" style="padding-bottom:72px">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;gap:48px">
+      <div style="flex:1 1 420px;min-width:0">
+        <h2 style="font-size:28px">Worship resources</h2>
+        <p class="section-intro" style="margin-bottom:16px">Find out more about the church year, our music and recent sermons.</p>
+        {resources.map((r) => <RowLink {...r} />)}
+      </div>
+      <div style="flex:1 1 420px;min-width:0" id="worship">
+        <h2 style="font-size:28px">Common Worship texts</h2>
+        <p class="section-intro" style="margin-bottom:16px">Download the main Common Worship book in sections as PDF files.</p>
+        {commonWorship.map(([title, pages, file]) => <RowLink href={`/assets/pdf/cw/${file}`} title={title} text={`pages ${pages}`} tag="PDF" />)}
+        <RowLink href="/assets/pdf/cw/rtffiles.zip" title="All sections" text="editable RTF files" tag="ZIP" />
+      </div>
+    </div>
+  </section>
+</BaseLayout>

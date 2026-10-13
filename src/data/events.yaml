@@ -1,0 +1,70 @@
+# Benefice and fundraising events. Events dated today or later appear under
+# "Coming up"; earlier ones are listed under "Earlier in <year>".
+# parish: Benefice, Cowlinge, Denston, Lidgate, Ousden, Stansfield, Stradishall or Wickhambrook
+- id: 2026-03-19-jane-eyre
+  date: 2026-03-19
+  parish: Cowlinge
+  place: Cowlinge
+  time: 7.30pm
+  title: "This is my theatre: Jane Eyre"
+  link: https://www.tickettailor.com/events/cuemarketing/1941319
+  linkText: Buy tickets
+- id: 2026-05-16-ousden-farm-walk
+  date: 2026-05-16
+  parish: Ousden
+  place: Ousden
+  time: 10am
+  title: Ousden spring farm walk
+  link: https://ousdenvillagehall.org.uk/2026/02/11/ousden-spring-farm-walk-heritage-talk/
+- id: 2026-06-13-lidgate-farm-walk
+  date: 2026-06-13
+  parish: Lidgate
+  place: Lidgate
+  time: 6pm
+  title: Lidgate farm walk
+- id: 2026-07-04-camus
+  date: 2026-07-04
+  parish: Cowlinge
+  place: Cowlinge church
+  time: 7.30pm
+  title: An evening of folk music with Camus
+  link: https://drive.google.com/file/d/1EktM14Jdj1zEz0Axl1bnougdUcm4Zx5h/view?usp=sharing
+- id: 2026-07-19-stansfield-bbq
+  date: 2026-07-19
+  parish: Stansfield
+  place: Stansfield village hall
+  time: 12.15pm
+  title: Stansfield BBQ
+  link: https://drive.google.com/file/d/1oo9pSJN4u2G8qmPC1Y26gaOknxp78Dw4/view?usp=sharing
+- id: 2026-08-09-lidgate-graffiti
+  date: 2026-08-09
+  parish: Lidgate
+  place: Lidgate church
+  time: 3.30pm
+  title: "The graffiti of Lidgate church: a talk by Anthony Foreman"
+- id: 2026-08-15-cheese-wine
+  date: 2026-08-15
+  parish: Lidgate
+  place: Street Farm, Lidgate
+  time: 6.30pm
+  title: Cheese and wine evening
+  note: Tickets from Janet on 01638 500587
+- id: 2026-09-12-ride-and-stride
+  date: 2026-09-12
+  parish: Benefice
+  place: All churches
+  time: 9am–5pm
+  title: Suffolk Historic Churches Trust Ride and Stride
+  link: /events/bike_ride.html
+- id: 2026-09-21-strad-fest
+  date: 2026-09-21
+  parish: Stradishall
+  place: Stradishall church
+  time: From 11am
+  title: Strad Fest
+- id: 2026-09-26-baroque
+  date: 2026-09-26
+  parish: Cowlinge
+  place: Cowlinge
+  time: 7pm
+  title: A celebration of Baroque music

@@ -1,0 +1,32 @@
+---
+// Privacy, cookies, copyright and charity status, at /notices/<policy>.html
+import { getEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { CONTACT_EMAIL } from '../../data/site';
+import { POLICIES } from '../../data/policies';
+
+export function getStaticPaths() {
+  return POLICIES.map((p) => ({ params: { policy: p.id } }));
+}
+const { policy } = Astro.params;
+const entry = (await getEntry('pages', `notices/${policy}`))!;
+const { title, description } = entry.data;
+---
+<BaseLayout title={title} description={description}>
+  <PageHero title="Policies and notices" trail={[{ label: 'Policies and notices', href: '/notices/privacypolicy.html' }, { label: title }]}
+    lede="How we look after your information, and the legal details for our parishes." />
+  <section style="padding:48px 0 72px">
+    <div class="wrap pol">
+      <nav class="pol-nav" aria-label="Policies" data-pagefind-ignore>
+        {POLICIES.map((p) => <a class="navbtn" href={`/notices/${p.id}.html`} aria-current={p.id === policy ? 'page' : undefined}>{p.label}</a>)}
+        <a class="navbtn" href="/notices/safeguarding.html">Safeguarding</a>
+      </nav>
+      <article class="prose-card prose" style="flex:999 1 560px;min-width:0">
+        <h2 style="margin-top:0;font-size:32px">{title}</h2>
+        <Fragment set:html={entry.rendered?.html} />
+        <p style="margin:32px 0 0;padding-top:20px;border-top:1px solid var(--line);font-size:16px;color:var(--ink-3)">Questions about this policy? Email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+      </article>
+    </div>
+  </section>
+</BaseLayout>

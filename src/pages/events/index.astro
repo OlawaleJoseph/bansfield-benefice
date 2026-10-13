@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { CONTACT_EMAIL, EVENTS_CALENDAR } from '../../data/site';
+
+const events = (await getCollection('events')).map((e) => e.data).sort((a, b) => a.date.valueOf() - b.date.valueOf());
+const year = events.length ? events[events.length - 1].date.getFullYear() : new Date().getFullYear();
+const parishes = ['All', ...new Set(events.map((e) => e.parish))];
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+const fmt = (d: Date, o: Intl.DateTimeFormatOptions) => d.toLocaleDateString('en-GB', { ...o, timeZone: 'UTC' });
+---
+<BaseLayout title="Events" nav="events" description="Benefice events and fundraising events across the seven churches of the Bansfield Benefice.">
+  <PageHero title="Events" trail={[{ label: 'Events' }]}
+    lede="Concerts, farm walks, talks and suppers across our villages. Every event helps us look after our churches." />
+
+  <section style="padding:48px 0 24px">
+    <div class="wrap">
+      <h2 style="margin-bottom:16px">Coming up</h2>
+      <ol class="ev-list" data-upcoming hidden></ol>
+      <div class="empty-box" data-empty>
+        <div style="flex:1 1 380px;min-width:0">
+          <p style="margin:0 0 4px;font-weight:700;font-size:20px">No events have been announced yet</p>
+          <p class="muted" style="margin:0">Plans for winter and Christmas will appear here soon. Our calendar always has the latest details.</p>
+        </div>
+        <a class="btn btn-ghost" href="#calendar">Open the events calendar</a>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:32px 0 48px">
+    <div class="wrap">
+      <h2>Earlier in {year}</h2>
+      <p class="section-intro">Fundraising events held across the Benefice this year. For more information, email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+      <div class="chips" role="group" aria-label="Filter by parish">
+        {parishes.map((p) => <button type="button" class="chip" data-filter={p} aria-pressed={p === 'All' ? 'true' : 'false'}>{p === 'All' ? 'All parishes' : p}</button>)}
+      </div>
+      <ol class="ev-list" data-past>
+        {events.map((e) => (
+          <li class="ev" data-date={iso(e.date)} data-parish={e.parish}>
+            <div class="ev-date">
+              <div class="ev-day">{fmt(e.date, { day: 'numeric' })}</div>
+              <div class="ev-mon">{fmt(e.date, { month: 'short' })}</div>
+            </div>
+            <div class="ev-body">
+              <p class="ev-title">{e.title}</p>
+              <p class="ev-meta">{e.place} · {e.time}</p>
+              {e.note && <p class="ev-note">{e.note}</p>}
+            </div>
+            {e.link && <a class="ev-link" href={e.link}>{e.linkText}</a>}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section-tight" style="padding-bottom:72px">
+    <div class="wrap split" id="calendar">
+      <div class="main">
+        <h2>Events diary and calendar</h2>
+        <p class="section-intro">Services and events across the Benefice.</p>
+        <iframe src={EVENTS_CALENDAR} title="Events diary and calendar" loading="lazy" style="width:100%;height:520px;border:1px solid var(--line);border-radius:12px;background:#fff"></iframe>
+      </div>
+      <aside class="side">
+        <div class="panel">
+          <h2>Follow us on Facebook</h2>
+          <p>Photos, news and event updates from around the Benefice.</p>
+          <a class="btn btn-primary" href="https://www.facebook.com/bansfieldbenefice">Bansfield Benefice on Facebook</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Move events dated today or later into "Coming up", and filter the rest by parish.
+  const past = document.querySelector<HTMLElement>('[data-past]')!;
+  const upcoming = document.querySelector<HTMLElement>('[data-upcoming]')!;
+  const today = new Date().toISOString().slice(0, 10);
+  past.querySelectorAll<HTMLElement>('.ev').forEach((ev) => {
+    if (ev.dataset.date! >= today) upcoming.appendChild(ev);
+  });
+  if (upcoming.children.length) {
+    upcoming.hidden = false;
+    document.querySelector<HTMLElement>('[data-empty]')!.hidden = true;
+  }
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('.chip[data-filter]')];
+  chips.forEach((chip) =>
+    chip.addEventListener('click', () => {
+      const f = chip.dataset.filter;
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      past.querySelectorAll<HTMLElement>('.ev').forEach((ev) => (ev.hidden = !(f === 'All' || ev.dataset.parish === f)));
+    }),
+  );
+</script>

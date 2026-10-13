@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { RECTOR } from '../../data/site';
+
+const people = [
+  { title: 'Church officers', text: 'Ministry team, churchwardens and safeguarding officers', href: '/benefice/officials.html' },
+  { title: 'Benefice committee', text: 'Members, meetings and minutes', href: '/benefice/committee/' },
+  { title: 'Contacts', text: 'How to reach the Rector and the Benefice', href: '/benefice/contact.html' },
+  { title: 'Press', text: 'Announcements and press releases', href: '/press/' },
+];
+const groups = [
+  { title: 'Study group', text: 'Read and talk about the Bible together', href: '/benefice/study/' },
+  { title: 'Bell ringing', text: 'Learn to ring, or join a band', href: '/benefice/bellringing.html' },
+  { title: 'Benefice Hall', text: 'Our shared hall and how to hire it', href: '/benefice/hall.html' },
+  { title: 'Churches Together', text: 'Working with other local churches', href: '/benefice/churchestogether.html' },
+  { title: 'Charities we support', text: 'Causes our parishes give to', href: '/benefice/charity.html' },
+  { title: 'Love in a Box', text: 'Our shoebox appeal', href: '/benefice/shoebox.html' },
+  { title: 'Christingle', text: "Supporting the Children's Society", href: '/services/special/christingle.html' },
+  { title: 'Traidcraft', text: 'Fair-trade goods', href: '/benefice/traid.html' },
+  { title: 'Deanery Share', text: 'How we support the wider Church', href: '/benefice/share.html' },
+  { title: 'Christian Aid Week', text: 'Our support for Christian Aid', href: '/benefice/caweek.html' },
+  { title: "The Children's Society", text: 'Supporting children and young people', href: '/benefice/childrensoc.html' },
+  { title: 'Kagera', text: 'Our link with the Diocese of Kagera', href: '/benefice/kagera.html' },
+  { title: 'Shelter', text: 'Supporting the housing charity', href: '/benefice/shelter.html' },
+  { title: 'JAM Club', text: "Our children's club", href: '/jamclub/' },
+  { title: 'Media', text: 'Photos and recordings', href: '/media/' },
+  { title: 'Useful links', text: 'Other sites you may find helpful', href: '/benefice/links.html' },
+];
+---
+<BaseLayout title="About the Benefice" nav="about" description="About the Bansfield Benefice: the Rector's welcome, our people, groups and causes.">
+  <PageHero title="About the Benefice" trail={[{ label: 'About' }]}
+    lede="The Bansfield Benefice is the name for seven Church of England parishes in the Diocese of St Edmundsbury and Ipswich, Suffolk: Cowlinge, Denston, Lidgate, Ousden, Stansfield, Stradishall and Wickhambrook." />
+
+  <section class="section">
+    <div class="wrap split">
+      <article class="main">
+        <h2 style="margin:0 0 16px">A welcome from our Rector</h2>
+        <div style="display:flex;gap:20px;align-items:center;margin-bottom:20px">
+          <img class="avatar" src={RECTOR.photo} alt="" width="96" height="96" style="width:96px;height:96px" />
+          <div><p style="margin:0;font-weight:700;font-size:20px">{RECTOR.name}</p><p style="margin:0;color:var(--ink-4)">Rector of the Bansfield Benefice</p></div>
+        </div>
+        <p style="margin:0 0 16px;color:var(--ink-2)">Thank you for visiting our website. Our Benefice is made up of seven rural Anglican parishes in West Suffolk, in the Diocese of St Edmundsbury and Ipswich. Each of our seven parishes has a beautiful church building with its own distinctive character, and each has regular services as well as being a focal point for its local community.</p>
+        <p style="margin:0 0 16px;color:var(--ink-2)">The Church is led by the Rector, assisted by a Lay Elder and many other lay people. Although we are one Benefice, with shared values and identity, we are also seven quite distinct parishes with our own community needs and strengths.</p>
+        <p style="margin:0 0 24px;color:var(--ink-2)">Do come and visit our churches, and please join us for worship if you can. You will be made most welcome.</p>
+        <div class="btn-row">
+          <a class="btn btn-ghost" href="/benefice/welcome.html">Read the full welcome</a>
+          <a class="btn btn-ghost" href="/benefice/vision.html">Read our vision</a>
+          <a class="btn btn-ghost" href="/press/bell-rector.html">About our Rector</a>
+        </div>
+      </article>
+      <aside class="side">
+        <div class="panel">
+          <h2>What is a benefice?</h2>
+          <p>A benefice is “an ecclesiastical property held by a rector, vicar or other church officer”. In our case it is the seven parish churches in the charge of a Rector.</p>
+          <h2 style="margin-top:20px">Where our name comes from</h2>
+          <p>“Bansfield” comes from <a href="/wickhambrook/localhistory/badmondisfield.html">Badmondisfield Hall</a> in Wickhambrook, one of the oldest buildings in the village, which is recorded in the <a href="https://en.wikipedia.org/wiki/Domesday_Book">Domesday Book</a>.</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <h2>People</h2>
+      <p class="section-intro">The people who look after our churches and our life together.</p>
+      <div class="grid g-240">
+        {people.map((t) => <a class="tile" href={t.href}><span class="tile-t">{t.title}</span><span class="tile-s">{t.text}</span></a>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <h2>Get involved</h2>
+      <p class="section-intro">Groups, places and causes that are part of Benefice life.</p>
+      <div class="grid g-240">
+        {groups.map((t) => <a class="tile" href={t.href}><span class="tile-t">{t.title}</span><span class="tile-s">{t.text}</span></a>)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section-tight" style="padding-bottom:72px">
+    <div class="wrap grid g-300">
+      <div class="panel">
+        <h2>Benefice description</h2>
+        <ul style="margin:0;padding-left:20px;color:var(--ink-3)">
+          <li>Benefice patrons: Diocesan Board of Patronage, Mr Slater, Lord Chancellor</li>
+          <li>Archdeaconry: Sudbury (332)</li>
+          <li>Deanery: Clare (33201)</li>
+          <li>Benefice: Bansfield (33/011BL)</li>
+        </ul>
+        <p style="margin-top:12px"><a href="https://www.cofesuffolk.org/">Our Diocese</a></p>
+      </div>
+      <div class="panel" id="rector">
+        <h2>Vicar or Rector?</h2>
+        <p><strong>Vicar</strong>: the common title of a parish priest in the Church of England, historically appointed to carry out the duties of the Rector.</p>
+        <p><strong>Rector</strong>: an Anglican parish priest who held “freehold” tenure. Since 2011 all priests have been appointed under common tenure, though the historic title of the parish remains in use.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import RouteForm from '../../components/RouteForm.astro';
+import { CONTACT_EMAIL, PARISH_GIVING, VISIT_FORM } from '../../data/site';
+
+const churches = await getCollection('churches');
+const steps = [
+  { title: "Check when it's open", text: 'Denston, Ousden and Stradishall are open every day from 10am to 3pm.' },
+  { title: 'Book the others', text: "Cowlinge, Lidgate, Stansfield and Wickhambrook can be opened for you. Just give us a week's notice." },
+  { title: 'Find your way', text: 'Use the what3words links or the route planner below to find each church.' },
+];
+---
+<BaseLayout title="Visit" nav="visit" description="Opening times, directions and booking for heritage visits to the Bansfield Benefice churches.">
+  <PageHero title="Visit our churches" trail={[{ label: 'Visit' }]}
+    lede="Visitors are always welcome. Three of our churches are open every day. We're happy to open the others for you if you give us a week's notice." />
+
+  <section style="padding:48px 0">
+    <div class="wrap grid g-260">
+      {steps.map((s, i) => (
+        <div class="card" style="flex-direction:row;gap:16px;padding:24px">
+          <span class="step-num">{i + 1}</span>
+          <div><h2 style="margin:0 0 4px;font-size:21px">{s.title}</h2><p class="muted" style="font-size:17px">{s.text}</p></div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap">
+      <h2 style="margin-bottom:16px">Opening times and locations</h2>
+      <div class="table-box">
+        <table>
+          <thead><tr><th scope="col">Church</th><th scope="col">When it's open</th><th scope="col">Find it (what3words)</th><th scope="col">Give online</th></tr></thead>
+          <tbody>
+            {churches.map(({ id, data: c }) => (
+              <tr>
+                <td><a href={`/${id}/`} style="font-weight:700">{c.village}</a><br /><span style="font-size:15px;color:var(--ink-4)">{c.dedication}</span></td>
+                <td><span class:list={['pill', c.openDaily ? 'pill-daily' : 'pill-svc']}>{c.openDaily ? 'Daily, 10am–3pm, and for services' : 'For services; at other times by arrangement'}</span></td>
+                <td><a href={`https://what3words.com/${c.what3words}`}>///{c.what3words}</a></td>
+                <td>{c.parishGiving ? <a href={`${PARISH_GIVING}${c.parishGiving}/`}>Donate to {c.village}</a> : <span style="color:var(--ink-4)">Use the box in church</span>}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="form-note" style="margin-top:12px">Where possible, for example at Wickhambrook, the churches display a notice showing who holds the key. The best way to find a church open, with local history experts on hand, is to join us for a <a href="/services/">service</a>.</p>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+      <div class="form" style="flex:3 1 460px;min-width:0" id="book">
+        <h2>Book a visit</h2>
+        <p>Please give us at least a week's notice so we can arrange for the church to be open.</p>
+        <iframe src={`${VISIT_FORM}?embedded=true`} title="Book a heritage visit" loading="lazy" style="width:100%;height:1700px;border:0"></iframe>
+        <p class="form-note">Form not loading? <a href={VISIT_FORM}>Open the booking form</a> or email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.</p>
+      </div>
+      <div style="flex:2 1 320px;min-width:0;display:flex;flex-direction:column;gap:24px">
+        <RouteForm />
+        <div class="panel-dark" id="donate">
+          <h2>Help keep our churches open</h2>
+          <p>Each church costs around £10,000 a year to look after. If you enjoyed your visit, a gift of £3 to £5 makes a real difference.</p>
+          <a class="btn btn-white" href="https://www.parishgiving.org.uk/">Make a donation</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

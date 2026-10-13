@@ -1,0 +1,12 @@
+---
+// Every migrated page that is a folder index, e.g. /cowlinge/history/
+import { getCollection } from 'astro:content';
+import MigratedPage from '../../components/MigratedPage.astro';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages', (p) => p.id.endsWith('/index'));
+  return pages.map((entry) => ({ params: { dir: entry.id.slice(0, -'/index'.length) }, props: { entry } }));
+}
+const { entry } = Astro.props;
+---
+<MigratedPage entry={entry} />

@@ -1,0 +1,58 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { CHURCH_SLUGS, SECTION_NAMES, urlForId } from '../../data/site';
+
+const churches = await getCollection('churches');
+const migrated = await getCollection('pages');
+
+const designed = [
+  { url: '/', title: 'Home' },
+  { url: '/services/', title: 'Services' },
+  { url: '/visits/', title: 'Visit our churches' },
+  { url: '/events/', title: 'Events' },
+  { url: '/churches/', title: 'Our seven churches' },
+  { url: '/benefice/', title: 'About the Benefice' },
+  { url: '/benefice/lifeevents.html', title: 'Baptisms, weddings and funerals' },
+  { url: '/benefice/contact.html', title: 'Contact us' },
+  { url: '/benefice/search.html', title: 'Search' },
+  { url: '/news/', title: 'News and newsletters' },
+  { url: '/notices/safeguarding.html', title: 'Safeguarding' },
+  ...churches.map((c) => ({ url: `/${c.id}/`, title: `${c.data.village} — ${c.data.dedication}` })),
+];
+const all = [...designed, ...migrated.map((p) => ({ url: urlForId(p.id), title: p.data.title }))];
+
+const groups = new Map<string, { url: string; title: string }[]>();
+for (const p of all) {
+  const seg = p.url.split('/')[1];
+  const section = p.url.split('/').length > 2 ? seg : '';
+  if (!groups.has(section)) groups.set(section, []);
+  groups.get(section)!.push(p);
+}
+const order = ['', 'services', 'visits', 'events', 'churches', ...CHURCH_SLUGS, 'benefice', 'news', 'press', 'jamclub', 'media', 'notices'];
+const sections = [...order, ...[...groups.keys()].filter((k) => !order.includes(k)).sort()]
+  .filter((s) => groups.has(s))
+  .map((s) => ({
+    name: SECTION_NAMES[s] ?? s,
+    pages: groups.get(s)!.sort((a, b) => a.url.split('/').length - b.url.split('/').length || a.url.localeCompare(b.url)),
+  }));
+---
+<BaseLayout title="Sitemap" description="Sitemap of the Bansfield Benefice website.">
+  <PageHero title="Sitemap" trail={[{ label: 'Search', href: '/benefice/search.html' }, { label: 'Sitemap' }]} lede="Every page on the Bansfield Benefice website." />
+  <section style="padding:48px 0 72px" data-pagefind-ignore>
+    <div class="wrap grid sitemap" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;align-items:start">
+      {sections.map((s) => s.pages.length > 12 ? (
+        <details class="panel" style="padding:20px">
+          <summary style="cursor:pointer;font-weight:700;font-size:19px">{s.name} ({s.pages.length} pages)</summary>
+          <ul style="margin-top:12px">{s.pages.map((p) => <li><a href={p.url}>{p.title}</a></li>)}</ul>
+        </details>
+      ) : (
+        <div class="panel" style="padding:20px">
+          <h3>{s.name}</h3>
+          <ul>{s.pages.map((p) => <li><a href={p.url}>{p.title}</a></li>)}</ul>
+        </div>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

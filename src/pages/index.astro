@@ -1,0 +1,175 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import Photo from '../components/Photo.astro';
+import OpenPill from '../components/OpenPill.astro';
+import RotaCard from '../components/RotaCard.astro';
+import { DSO, RECTOR, tel } from '../data/site';
+
+const churches = await getCollection('churches');
+const rotas = (await getCollection('rotas')).slice(0, 2);
+
+const quick = [
+  { title: 'Services this month', text: 'Where and when to worship with us', href: '/services/', icon: 'calendar' },
+  { title: 'Visit a church', text: 'Opening times and how to find us', href: '/visits/', icon: 'pin' },
+  { title: 'Life events', text: 'Baptisms, weddings and funerals', href: '/benefice/lifeevents.html', icon: 'heart' },
+  { title: 'Contact us', text: 'Speak to the Rector or the office', href: '/benefice/contact.html', icon: 'mail' },
+] as const;
+
+const slides = [
+  { src: '/images/stradishall/outside.jpg', alt: "St Margaret's, Stradishall" },
+  { src: '/images/stradishall/chancel.jpg', alt: 'The chancel at Stradishall' },
+  { src: '/images/benefice/lidgate-bailey-pond.jpg', alt: 'The bailey pond at Lidgate' },
+];
+
+// Church of the day rotates by weekday: Monday = Cowlinge … Sunday = Wickhambrook.
+const cotd = churches.map(({ id, data: c }) => ({
+  slug: id, village: c.village, name: `${c.dedication}, ${c.village}`,
+  text: `${c.intro} ${c.history}`, img: c.photo.src, small: c.photo.small, alt: c.photo.alt,
+}));
+const today = cotd[(new Date().getDay() + 6) % 7];
+---
+<BaseLayout title="Home" nav="home" fullTitle="Bansfield Benefice — Seven parish churches in West Suffolk">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="eyebrow">Church of England · West Suffolk</p>
+        <h1>Seven village churches, one welcoming family</h1>
+        <p class="lede">The Bansfield Benefice brings together the parish churches of Cowlinge, Denston, Lidgate, Ousden, Stansfield, Stradishall and Wickhambrook. Everyone is welcome, whether you come to a service, visit quietly or join one of our village events.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="/services/">Find a service</a>
+          <a class="btn btn-ghost" href="/visits/">Plan a visit</a>
+        </div>
+      </div>
+      <div class="hero-media">
+        <div class="slides" data-slides>
+          {slides.map((s, i) => <img class:list={['photo', { on: i === 0 }]} src={s.src} alt={s.alt} loading={i ? 'lazy' : 'eager'} />)}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-label="Quick links" style="padding:0 0 64px">
+    <div class="wrap grid g-240">
+      {quick.map((q) => (
+        <a class="qlink" href={q.href}>
+          <span class="q-ico"><Icon name={q.icon} /></span>
+          <span class="q-title">{q.title}</span>
+          <span class="q-text">{q.text}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section style="background:var(--mint);padding:64px 0">
+    <div class="wrap">
+      <h2 class="h2" style="font-size:32px">This month</h2>
+      <p class="section-intro">Our services move between the seven churches. The monthly rota shows where and when each one takes place.</p>
+      <div class="grid g-300">
+        {rotas.map((r, i) => <RotaCard rota={r.data} first={i === 0} variant="home" />)}
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:72px 0">
+    <div class="wrap">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:28px">
+        <div>
+          <h2 class="h2" style="font-size:32px">Our seven churches</h2>
+          <p class="muted" style="margin:0">Each one has its own story. Two of them appear in Simon Jenkins' <em>England's Thousand Best Churches</em>.</p>
+        </div>
+        <a href="/churches/" style="font-weight:700">See all churches</a>
+      </div>
+      <div class="grid g-250">
+        {churches.map(({ id, data: c }) => (
+          <a class="church-card" href={`/${id}/`}>
+            <span class="cc-img"><Photo {...c.photo} /></span>
+            <span class="cc-body">
+              <span class="cc-title">{c.village}</span>
+              <span class="cc-sub">{c.dedication}</span>
+              <OpenPill daily={c.openDaily} />
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:0 0 72px">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;gap:24px">
+      <article class="feature" id="cotd">
+        <div class="f-img" data-cotd-img><Photo src={today.img} alt={today.alt} small={today.small} /></div>
+        <div class="f-body">
+          <p class="kicker" style="color:var(--rust)">Church of the day</p>
+          <h3 data-cotd-name>{today.name}</h3>
+          <p data-cotd-text>{today.text}</p>
+          <a data-cotd-link href={`/${today.slug}/`} style="font-weight:700;margin-top:4px">Discover {today.village}</a>
+        </div>
+      </article>
+      <aside class="verse">
+        <p class="v-text">“The Lord bless us, and keep us; the Lord lift up the light of his countenance upon us, and give us peace, now and for evermore. Amen.”</p>
+        <p class="v-ref">Thought for the day</p>
+      </aside>
+    </div>
+  </section>
+
+  <section style="background:var(--stone);padding:64px 0">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;gap:40px;align-items:center">
+      <img class="avatar" src={RECTOR.photo} alt={RECTOR.name} width="160" height="160" style="width:160px;height:160px" />
+      <div style="flex:1 1 420px;min-width:0">
+        <h2 class="h2">A welcome from our Rector</h2>
+        <p class="muted" style="margin:0 0 20px">{RECTOR.name} looks after all seven parishes. Get in touch with her about baptisms, weddings, funerals or anything on your mind.</p>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="/benefice/welcome.html">Read the welcome</a>
+          <a class="btn btn-ghost" href="/benefice/lifeevents.html">Baptisms, weddings &amp; funerals</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:48px 0">
+    <div class="wrap">
+      <div class="notice-box">
+        <div style="flex:1 1 420px;min-width:0">
+          <h2>Worried about a child or vulnerable adult?</h2>
+          <p>Call the Rector on <a href={tel(RECTOR.tel)} style="font-weight:700">{RECTOR.tel}</a> or the Diocesan Safeguarding Officer on <a href={tel(DSO.tel)} style="font-weight:700">{DSO.tel}</a>. If someone is in immediate danger, call 999.</p>
+        </div>
+        <a class="btn btn-ghost" href="/notices/safeguarding.html">Safeguarding</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script type="application/json" id="cotd-data" set:html={JSON.stringify(cotd)} />
+
+<script>
+  // Hero slideshow
+  const slides = [...document.querySelectorAll<HTMLImageElement>('[data-slides] img')];
+  if (slides.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let i = 0;
+    setInterval(() => {
+      slides[i].classList.remove('on');
+      i = (i + 1) % slides.length;
+      slides[i].classList.add('on');
+    }, 6000);
+  }
+
+  // Church of the day for the visitor's own weekday (the build date may differ)
+  type Cotd = { slug: string; village: string; name: string; text: string; img: string; small: boolean; alt: string };
+  const data = document.getElementById('cotd-data');
+  if (data) {
+    const c = (JSON.parse(data.textContent || '[]') as Cotd[])[(new Date().getDay() + 6) % 7];
+    const fig = document.querySelector<HTMLElement>('[data-cotd-img] figure')!;
+    const img = fig.querySelector('img')!;
+    document.querySelector('[data-cotd-name]')!.textContent = c.name;
+    document.querySelector('[data-cotd-text]')!.textContent = c.text;
+    const link = document.querySelector<HTMLAnchorElement>('[data-cotd-link]')!;
+    link.href = `/${c.slug}/`;
+    link.textContent = `Discover ${c.village}`;
+    img.src = c.img;
+    img.alt = c.alt;
+    fig.classList.toggle('small', c.small);
+    fig.style.setProperty('--bg', c.small ? `url('${c.img}')` : '');
+  }
+</script>

@@ -1,0 +1,18 @@
+---
+// Directions via Google Maps, as on the old site.
+import { ROUTE_DESTINATIONS } from '../data/site';
+---
+<form class="form" action="https://maps.google.co.uk/maps" method="get" target="_blank">
+  <h2 style="font-size:24px">Plan your route</h2>
+  <label class="field">Going to
+    <select name="daddr" required>
+      <option value="">Choose a destination</option>
+      {ROUTE_DESTINATIONS.map(([name, postcode]) => <option value={postcode}>{name}</option>)}
+    </select>
+  </label>
+  <label class="field">From your postcode
+    <input type="text" name="saddr" autocomplete="postal-code" placeholder="e.g. CB8 8XH" />
+  </label>
+  <input type="hidden" name="hl" value="en" />
+  <button type="submit" class="btn btn-ghost">Get directions</button>
+</form>

@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Photo from '../../components/Photo.astro';
+import OpenPill from '../../components/OpenPill.astro';
+
+const churches = await getCollection('churches');
+---
+<BaseLayout title="Our churches" nav="churches" description="The seven parish churches of the Bansfield Benefice in West Suffolk.">
+  <section class="page-hero">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;gap:32px;align-items:center">
+      <div style="flex:1 1 460px;min-width:0">
+        <Breadcrumbs trail={[{ label: 'Our churches' }]} />
+        <h1>Our seven churches</h1>
+        <p class="lede">Each village has its own parish church, cared for by its community. Two of them appear in Simon Jenkins' <em>England's Thousand Best Churches</em>.</p>
+      </div>
+      <div style="flex:1 1 340px;min-width:0;display:flex;justify-content:center">
+        <img src="/images/benefice-map.png" alt="Map of the seven villages of the Benefice" width="260" height="260" style="border-radius:12px;background:#fff" />
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:56px 0 72px">
+    <div class="wrap" style="display:flex;flex-direction:column;gap:20px">
+      {churches.map(({ id, data: c }) => (
+        <article class="church-list-item">
+          <div class="cli-img"><Photo {...c.photo} /></div>
+          <div class="cli-body">
+            <div style="display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline">
+              <h2>{c.village}</h2><span style="color:var(--ink-4)">{c.dedication}</span>
+            </div>
+            <p class="muted">{c.blurb}</p>
+            <p style="font-size:16px"><OpenPill daily={c.openDaily} long /></p>
+            <div class="btn-row" style="margin-top:8px">
+              <a class="btn btn-primary" href={`/${id}/`}>About {c.village}</a>
+              <a class="btn btn-ghost" href={`https://what3words.com/${c.what3words}`}>Directions</a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,89 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Photo from '../../components/Photo.astro';
+import OpenPill from '../../components/OpenPill.astro';
+import RowLink from '../../components/RowLink.astro';
+import { PARISH_GIVING, SERVICES_CALENDAR } from '../../data/site';
+
+export async function getStaticPaths() {
+  const churches = await getCollection('churches');
+  return churches.map((church) => ({ params: { church: church.id }, props: { church, all: churches } }));
+}
+
+interface Props { church: CollectionEntry<'churches'>; all: CollectionEntry<'churches'>[] }
+const { church, all } = Astro.props;
+const c = church.data;
+
+const descriptions: Record<string, string> = {
+  history: 'The building and its story', funds: 'Fundraising and restoration', notices: 'Access, opening and local news',
+  visitors: 'Messages from visitors', registry: 'Baptisms, marriages and burials', links: 'Useful local links',
+  localhistory: 'The village through the centuries',
+};
+const describe = (href: string) => descriptions[href.replace(/\/$/, '').split('/').pop()!.replace('.html', '')];
+const giveUrl = c.parishGiving ? `${PARISH_GIVING}${c.parishGiving}/` : 'https://www.parishgiving.org.uk/';
+---
+<BaseLayout title={`${c.dedication}, ${c.village}`} nav="churches" description={c.blurb}>
+  <div class="tabs-bar" data-pagefind-ignore>
+    <nav class="wrap" aria-label="Our churches">
+      <span class="label">Our churches:</span>
+      {all.map((o) => <a class="tab" href={`/${o.id}/`} aria-current={o.id === church.id ? 'page' : undefined}>{o.data.village}</a>)}
+    </nav>
+  </div>
+
+  <section style="padding:40px 0 0">
+    <div class="wrap">
+      <Breadcrumbs trail={[{ label: 'Our churches', href: '/churches/' }, { label: c.village }]} />
+      <div class="church-head">
+        <div>
+          <p style="margin:0 0 4px;font-weight:700;color:var(--green-link)">{c.dedication}</p>
+          <h1>{c.village}</h1>
+        </div>
+        <OpenPill daily={c.openDaily} long style="font-size:16px;padding:6px 14px" />
+      </div>
+      <div class="photos">
+        <div class="p-main"><Photo {...c.photo} caption eager /></div>
+        <div class="p-side">{c.sidePhotos.map((p) => <Photo {...p} caption />)}</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:48px 0 72px">
+    <div class="wrap split">
+      <div class="main">
+        <h2 style="font-size:30px;margin:0 0 12px">About the church</h2>
+        <p style="margin:0 0 16px;font-size:19px;color:var(--ink-2)">{c.intro}</p>
+        <p class="muted" style="margin:0 0 32px">{c.history}</p>
+        {c.notes && <p class="prose" style="margin:0 0 32px" set:html={c.notes} />}
+        <h2 style="margin:0 0 8px;font-size:26px">More about {c.village}</h2>
+        {c.pages.map((p) => <RowLink href={p.href} title={p.label} text={describe(p.href)} />)}
+        {c.map && (
+          <>
+            <h2 style="margin:40px 0 12px;font-size:26px">Find {c.village} church</h2>
+            <iframe src={c.map} title={`Map showing ${c.village} church`} loading="lazy" allowfullscreen style="width:100%;height:380px;border:1px solid var(--line);border-radius:12px"></iframe>
+          </>
+        )}
+      </div>
+      <aside class="side">
+        <div class="card" style="padding:24px">
+          <h2 style="font-size:22px">Services</h2>
+          <p class="muted" style="font-size:17px">Services move between our seven churches. Check this month's rota for {c.village}.</p>
+          <a class="btn btn-primary" href="/services/">See service times</a>
+          <iframe src={SERVICES_CALENDAR} title="Services this week" loading="lazy" style="width:100%;height:240px;border:0;margin-top:8px"></iframe>
+        </div>
+        <div class="card" style="padding:24px">
+          <h2 style="font-size:22px">Visiting</h2>
+          <p class="muted" style="font-size:17px">{c.openDaily ? 'Open every day from 10am to 3pm, and for services.' : "Open for services. To visit at another time, book a week ahead and we'll open it for you."}</p>
+          <p style="font-size:17px"><strong>Find it:</strong> <a href={`https://what3words.com/${c.what3words}`}>///{c.what3words}</a></p>
+          <a class="btn btn-ghost" href="/visits/">Plan a visit</a>
+        </div>
+        <div class="panel-dark" style="padding:24px">
+          <h2 style="font-size:22px">Support {c.village}</h2>
+          <p style="font-size:17px">Looking after the church costs around £10,000 a year. Please give now to support our mission, ministry and church building.</p>
+          <a class="btn btn-white" href={giveUrl}>Donate</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,10 @@
+---
+interface Props { href: string; title: string; text?: string; tag?: string }
+const { href, title, text, tag } = Astro.props;
+---
+<a class="row-link" href={href}>
+  {tag
+    ? <span><strong>{title}</strong> {text && <span class="rl-s">· {text}</span>}</span>
+    : <span><strong>{title}</strong>{text && <><br /><span class="rl-s">{text}</span></>}</span>}
+  {tag ? <span class="tag">{tag}</span> : <span class="chev" aria-hidden="true">›</span>}
+</a>

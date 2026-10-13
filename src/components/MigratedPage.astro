@@ -1,0 +1,46 @@
+---
+// Layout for pages carried over from the old site: their own content and
+// left-hand navigation, in the new design.
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from './PageHero.astro';
+import type { Crumb } from './Breadcrumbs.astro';
+import { SECTION_NAMES, navFor, urlForId } from '../data/site';
+
+interface Props { entry: CollectionEntry<'pages'> }
+const { entry } = Astro.props;
+const { title, description, picture, nav = [] } = entry.data;
+const url = urlForId(entry.id);
+const section = entry.id.includes('/') ? entry.id.split('/')[0] : '';
+
+const trail: Crumb[] = [];
+const head = nav[0]?.head;
+if (head && head.href !== '/' && head.href !== url) trail.push({ label: head.label, href: head.href });
+else if (section && `/${section}/` !== url) trail.push({ label: SECTION_NAMES[section] ?? section, href: `/${section}/` });
+trail.push({ label: title });
+
+const isCurrent = (href: string) => href === url || href === `${url}index.html`;
+---
+<BaseLayout title={title} description={description} nav={navFor(url)}>
+  <PageHero title={title} trail={trail} />
+  <div class="wrap content-layout">
+    <article class="prose-card prose" set:html={entry.rendered?.html} />
+    {(picture || nav.length > 0) && (
+      <aside class="subnav" aria-label="In this section" data-pagefind-ignore>
+        {picture && <img src={picture.src} alt={picture.alt} width="129" height="121" style="border-radius:8px;margin-bottom:12px" />}
+        {nav.map((g) => (
+          <>
+            {g.head && (
+              <h2><a href={g.head.href} aria-current={isCurrent(g.head.href) ? 'page' : undefined} style="text-decoration:none;color:inherit">{g.head.label}</a></h2>
+            )}
+            {g.links.length > 0 && (
+              <ul>
+                {g.links.map((l) => <li><a href={l.href} aria-current={isCurrent(l.href) ? 'page' : undefined}>{l.label}</a></li>)}
+              </ul>
+            )}
+          </>
+        ))}
+      </aside>
+    )}
+  </div>
+</BaseLayout>

@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import Photo from '../../components/Photo.astro';
+import { RECTOR, tel } from '../../data/site';
+
+const coe = 'https://www.churchofengland.org/life-events/';
+const events = [
+  {
+    id: 'baptisms', title: 'Baptisms and confirmations',
+    photo: { src: '/images/benefice/confirmation-2007.jpg', alt: 'Confirmation candidates at Wickhambrook, 2007' },
+    text: 'Baptism, or christening, welcomes a child or adult into the Christian family. Baptisms can be held at any time of year.',
+    steps: ['Contact the Rector to talk about a date', 'Choose godparents and meet to prepare', 'Celebrate with family at one of our churches'],
+    more: `${coe}christenings`, moreText: 'About christenings (Church of England)',
+  },
+  {
+    id: 'weddings', title: 'Weddings',
+    photo: { src: '/images/stradishall/porch.jpg', alt: 'The porch at Stradishall' },
+    text: 'Marry in one of our seven historic village churches.',
+    steps: ['Contact the Rector before you book a venue', 'Arrange your banns or licence', 'Plan the service, music and readings'],
+    more: `${coe}your-church-wedding`, moreText: 'About church weddings (Church of England)',
+  },
+  {
+    id: 'funerals', title: 'Funerals',
+    photo: { src: '/images/stradishall/membook.jpg', alt: 'The memorial book at Stradishall' },
+    text: 'We are here to help you say goodbye, and to support you afterwards.',
+    steps: ['Your funeral director can contact us, or you can call the Rector', 'Meet to plan a service that reflects your loved one', 'Find support in the weeks and months ahead'],
+    more: `${coe}funerals`, moreText: 'About church funerals (Church of England)',
+  },
+];
+---
+<BaseLayout title="Baptisms, weddings and funerals" nav="about" description="Baptisms, confirmations, weddings and funerals in the Bansfield Benefice.">
+  <PageHero title="Baptisms, weddings and funerals" trail={[{ label: 'About', href: '/benefice/' }, { label: 'Life events' }]}
+    lede="Our churches are here for life's big moments. Whether or not you come to church, we'd love to help. The first step is always a conversation with the Rector." />
+
+  <section class="section">
+    <div class="wrap grid g-300" style="gap:24px">
+      {events.map((e) => (
+        <article id={e.id} class="card" style="padding:0;overflow:hidden;gap:0">
+          <div style="height:200px"><Photo {...e.photo} /></div>
+          <div style="padding:24px 26px 28px;display:flex;flex-direction:column;gap:12px;flex:1 1 auto">
+            <h2 style="font-size:28px">{e.title}</h2>
+            <p class="muted">{e.text}</p>
+            <ol style="margin:0;padding-left:22px;color:var(--ink-2);font-size:17px">{e.steps.map((s) => <li>{s}</li>)}</ol>
+            <a href={e.more} style="font-weight:700;font-size:17px;margin-top:auto">{e.moreText}</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap grid g-300">
+      <div class="panel"><h2>Confirmations</h2><p>Confirmations are arranged with the Rector, with a course of preparation leading to a confirmation service conducted by the Bishop.</p></div>
+      <div class="panel"><h2>Fees</h2><p>The current parochial fees are set by the Church of England.</p><p><a href="/benefice/fees.html" style="font-weight:700">Current parochial fees</a></p></div>
+      <div class="panel"><h2>Burial sites</h2><p>Churchyards and cemeteries within the Bansfield Benefice.</p><p><a href="/benefice/burials.html" style="font-weight:700">Burial sites</a></p></div>
+    </div>
+  </section>
+
+  <section class="section-tight" style="padding-bottom:72px">
+    <div class="wrap">
+      <div class="cta">
+        <div style="flex:1 1 420px;min-width:0">
+          <h2>Talk to {RECTOR.name}</h2>
+          <p>Call or email the Rector about baptisms, weddings, funerals or any other religious matter.</p>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn-white" href={tel(RECTOR.tel)}>Call {RECTOR.tel}</a>
+          <a class="btn btn-outline-white" href={`mailto:${RECTOR.email}`}>Email the Rector</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

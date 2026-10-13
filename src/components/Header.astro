@@ -1,0 +1,49 @@
+---
+import Icon from './Icon.astro';
+import { NAV, RECTOR, tel, type NavKey } from '../data/site';
+
+interface Props { current: NavKey }
+const { current } = Astro.props;
+---
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="topbar">
+    <div class="wrap">
+      <span class="t-desktop">Part of the <a href="https://www.cofesuffolk.org/">Diocese of St Edmundsbury &amp; Ipswich</a> · <a href="https://www.churchofengland.org/">Church of England</a></span>
+      <span class="topbar-links t-desktop">
+        <a href="/benefice/search.html"><Icon name="search" size={16} />Search</a>
+        <a href="/visits/#donate">Donate</a>
+      </span>
+      <span class="t-mobile">Church of England · Diocese of St Edmundsbury &amp; Ipswich</span>
+    </div>
+  </div>
+  <div class="wrap mast">
+    <a class="brand" href="/">
+      <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="#1E4A3B" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M20 4v8M16 8h8M8 36V20l12-8 12 8v16z"></path><path d="M17 36v-7a3 3 0 0 1 6 0v7"></path></svg>
+      <span class="brand-text">
+        <span class="brand-name">Bansfield Benefice</span>
+        <span class="brand-sub">Seven parish churches in West Suffolk</span>
+      </span>
+    </a>
+    <nav class="main-nav" aria-label="Main">
+      <ul>
+        {NAV.map((n) => <li><a href={n.href} aria-current={n.key === current ? 'page' : undefined}>{n.label}</a></li>)}
+      </ul>
+    </nav>
+    <button type="button" class="menu-btn" aria-expanded="false" aria-controls="mobile-menu">
+      <span class="i-open"><Icon name="menu" size={20} strokeWidth={2.2} /></span>
+      <span class="i-close"><Icon name="close" size={20} strokeWidth={2.2} /></span>
+      <span class="menu-label">Menu</span>
+    </button>
+  </div>
+  <nav id="mobile-menu" class="mobile-menu" aria-label="Main menu">
+    <ul>
+      {NAV.map((n) => <li><a href={n.href} aria-current={n.key === current ? 'page' : undefined}>{n.label}<span aria-hidden="true">›</span></a></li>)}
+    </ul>
+    <div class="mm-actions">
+      <a class="btn btn-ghost" href="/benefice/search.html"><Icon name="search" size={18} />Search</a>
+      <a class="btn btn-primary" href="/visits/#donate">Donate</a>
+    </div>
+    <p>Rector: <a href={tel(RECTOR.tel)}>{RECTOR.tel}</a></p>
+  </nav>
+</header>

@@ -1,0 +1,10 @@
+---
+// A photo frame. Low-resolution photos from the old site (small: true) are shown
+// at their natural size on a blurred copy of themselves instead of being stretched.
+interface Props { src: string; alt: string; small?: boolean; caption?: boolean; class?: string; eager?: boolean }
+const { src, alt, small = false, caption = false, class: cls, eager = false } = Astro.props;
+---
+<figure class:list={['pf', { small }, cls]} style={small ? `--bg:url('${src}')` : undefined}>
+  <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} decoding="async" />
+  {caption && alt && <figcaption>{alt}</figcaption>}
+</figure>

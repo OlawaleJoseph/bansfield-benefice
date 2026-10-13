@@ -1,0 +1,24 @@
+---
+// A monthly rota card. The label ("This month" / "Next month") is set at build
+// time and corrected in the browser for the visitor's current date (see scripts/site.ts).
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { rota: CollectionEntry<'rotas'>['data']; first: boolean; variant: 'home' | 'services' }
+const { rota, first, variant } = Astro.props;
+const key = `${rota.month} ${rota.year}`;
+---
+{variant === 'home' ? (
+  <article class="card-plain" data-rota={key}>
+    <p class="kicker" data-rota-label data-next="Coming up">{first ? 'This month' : 'Coming up'}</p>
+    <h3>{rota.month} services</h3>
+    <p class="muted">{rota.season}.</p>
+    <a class:list={['btn', first ? 'btn-primary' : 'btn-ghost']} href={rota.href}>Open {rota.month} rota</a>
+  </article>
+) : (
+  <article class:list={['card', { strong: first }]} data-rota={key}>
+    <span class:list={['pill', first ? 'pill-green' : 'pill-mint']} data-rota-label data-next="Next month">{first ? 'This month' : 'Next month'}</span>
+    <h3 style="font-size:26px">{rota.month} {rota.year}</h3>
+    <p class="muted">{rota.season} · Lectionary {rota.cycle}</p>
+    <a class:list={['btn', first ? 'btn-primary' : 'btn-ghost']} href={rota.href}>View {rota.month} services</a>
+  </article>
+)}

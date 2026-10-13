@@ -1,0 +1,104 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { CONTACT_EMAIL, DSO, MAILCHIMP, RECTOR, WEBMASTER_EMAIL, tel } from '../../data/site';
+
+// Each topic goes to the right person.
+const topics = [
+  { label: 'General enquiry', to: CONTACT_EMAIL },
+  { label: 'Visiting a church', to: CONTACT_EMAIL },
+  { label: 'Baptism, wedding or funeral', to: RECTOR.email },
+  { label: 'Events', to: CONTACT_EMAIL },
+  { label: 'The website', to: WEBMASTER_EMAIL },
+];
+---
+<BaseLayout title="Contact" nav="contact" description="Contact the Rector and the Bansfield Benefice.">
+  <PageHero title="Contact us" trail={[{ label: 'Contact' }]} lede="We're glad to hear from you. Choose the right person below, or send us a message." />
+
+  <section class="section">
+    <div class="wrap grid g-300">
+      <article class="card strong">
+        <div style="display:flex;gap:16px;align-items:center">
+          <img class="avatar" src={RECTOR.photo} alt="" width="64" height="64" style="width:64px;height:64px" />
+          <div><h2>{RECTOR.name}</h2><p style="color:var(--ink-4);font-size:16px">Rector</p></div>
+        </div>
+        <p class="muted" style="font-size:17px">For baptisms, weddings, funerals and anything of a religious nature.</p>
+        <a href={tel(RECTOR.tel)} style="font-weight:700;font-size:20px">{RECTOR.tel}</a>
+        <a href={`mailto:${RECTOR.email}`} style="font-weight:700">{RECTOR.email}</a>
+      </article>
+      <article class="card">
+        <h2>General enquiries</h2>
+        <p class="muted" style="font-size:17px">For general queries and to arrange church visits.</p>
+        <a href={`mailto:${CONTACT_EMAIL}`} style="font-weight:700;word-break:break-word">{CONTACT_EMAIL}</a>
+      </article>
+      <article class="card">
+        <h2>Website</h2>
+        <p class="muted" style="font-size:17px">Found a broken link or a problem with the site? Let our webmaster know.</p>
+        <a href={`mailto:${WEBMASTER_EMAIL}`} style="font-weight:700;word-break:break-word">{WEBMASTER_EMAIL}</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="section-tight">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+      <form class="form" id="message-form" style="flex:3 1 480px;min-width:0" action={`mailto:${CONTACT_EMAIL}`} method="post" enctype="text/plain">
+        <h2>Send a message</h2>
+        <p class="form-note">This opens your email app with your message ready to send.</p>
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+          <label class="field">Your name<input type="text" name="name" autocomplete="name" required /></label>
+          <label class="field">Email<input type="email" name="email" autocomplete="email" required /></label>
+        </div>
+        <label class="field">What's it about?
+          <select name="topic">{topics.map((t) => <option value={t.to}>{t.label}</option>)}</select>
+        </label>
+        <label class="field">Your message<textarea name="message" rows="5" required></textarea></label>
+        <button type="submit" class="btn btn-primary">Send message</button>
+      </form>
+      <aside class="warn-box" style="flex:2 1 320px;min-width:0">
+        <h2>Safeguarding concerns</h2>
+        <p>If you're worried about a child or vulnerable adult, please don't use the form. Call:</p>
+        <p><strong>Rector:</strong> <a href={tel(RECTOR.tel)}>{RECTOR.tel}</a></p>
+        <p><strong>Diocesan Safeguarding Officer</strong> ({DSO.name}): <a href={tel(DSO.tel)}>{DSO.tel}</a></p>
+        <p style="font-weight:700">If someone is in immediate danger, call 999.</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section-tight" style="padding-bottom:72px" id="subscribe">
+    <div class="wrap" style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
+      <form class="form" style="flex:3 1 480px;min-width:0" action={MAILCHIMP} method="post" target="_blank" novalidate>
+        <h2>Subscribe to our mailing list</h2>
+        <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+          <label class="field">Email address (required)<input type="email" name="EMAIL" required autocomplete="email" /></label>
+          <label class="field">First name<input type="text" name="FNAME" autocomplete="given-name" /></label>
+          <label class="field">Last name<input type="text" name="LNAME" autocomplete="family-name" /></label>
+        </div>
+        <!-- Mailchimp's anti-bot field: must stay empty -->
+        <div style="position:absolute;left:-5000px" aria-hidden="true"><input type="text" name="b_5f9737f31de47db8e3b9b1d74_4a4f2b8daf" tabindex="-1" value="" /></div>
+        <button type="submit" name="subscribe" class="btn btn-primary">Subscribe</button>
+      </form>
+      <div class="panel" style="flex:2 1 320px;min-width:0">
+        <h2>What you'll hear about</h2>
+        <ul style="margin:0 0 12px;padding-left:20px;color:var(--ink-3)">
+          <li>Upcoming services and service changes</li>
+          <li>Benefice news and updates</li>
+          <li>Upcoming fundraising events</li>
+        </ul>
+        <p>Please add {CONTACT_EMAIL} to your contacts so our messages reach your inbox, not your spam folder.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Compose an email to the right person; there's no server behind this form.
+  const form = document.getElementById('message-form') as HTMLFormElement;
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    const f = form.elements as unknown as Record<string, HTMLInputElement & HTMLSelectElement>;
+    const subject = `Website enquiry: ${f.topic.selectedOptions[0].text}`;
+    const body = `${f.message.value}\n\n${f.name.value}\n${f.email.value}`;
+    location.href = `mailto:${f.topic.value}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+</script>

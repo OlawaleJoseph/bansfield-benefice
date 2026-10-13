@@ -1,0 +1,15 @@
+# Monthly service rotas (Google Docs), shown on the home and services pages.
+# Add next month's rota at the bottom and remove the oldest one. The site
+# labels "This month" / "Next month" automatically from the current date.
+- id: 2026-10
+  month: October
+  year: 2026
+  season: Trinity season
+  cycle: Year A
+  href: https://docs.google.com/document/d/e/2PACX-1vSFDzxLL-XoHYq9vGZdG1hKXeisU2LojVJWJG7sxuZ0cUhVUHpoIubTpyRM6AHUGZug7j_XxulfsTK9/pub
+- id: 2026-11
+  month: November
+  year: 2026
+  season: All Souls' Day, Remembrance Sunday, Kingdom season, Christ the King
+  cycle: Year A / B
+  href: https://docs.google.com/document/d/e/2PACX-1vSBDQxqGvaksvZOw2ZNh7KG5SDQzgjCCUbQ4RjdekUcTq0p9mep3LdVSjJamASYFR5G4cen4eJVO_3i/pub

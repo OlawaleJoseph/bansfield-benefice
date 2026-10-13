@@ -1,0 +1,132 @@
+# The seven churches, in display order. Intro and history lines are drawn from
+# each church's history pages. Photos marked `small: true` are low-resolution
+# and are shown on a blurred backdrop rather than stretched.
+- id: cowlinge
+  village: Cowlinge
+  dedication: St Margaret's
+  openDaily: false
+  what3words: lush.subsystem.eruptions
+  parishGiving: cowlinge-st-margaret-newmarket
+  photo: { src: /images/cowlinge/cowlinge.gif, small: true, alt: "St Margaret's, Cowlinge, from the north-east" }
+  sidePhotos:
+    - { src: /images/wickhambrook/localhistory/benefice_villages/cowlinge_branches_park1.gif, small: true, alt: Branches Park, Cowlinge }
+    - { src: /images/cowlinge/cowlinge-donate-500.jpg, alt: "St Margaret's, Cowlinge" }
+  intro: Welcome to the Church of St Margaret of Antioch, which serves a large but very scattered parish in the far west of Suffolk.
+  history: The parish stretches some three miles from its border with Lidgate in the north to Stradishall airfield in the south, and takes in the 200-acre Branches Park estate laid out by Capability Brown.
+  blurb: A large, scattered parish in the far west of Suffolk, and a lively venue for music through the year.
+  map: https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d2447.2574282676173!2d0.5102910489349365!3d52.16601287385711!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2suk!4v1582465937001!5m2!1sen!2suk
+  pages:
+    - { label: History, href: /cowlinge/history/ }
+    - { label: Links, href: /cowlinge/links.html }
+
+- id: denston
+  village: Denston
+  dedication: St Nicholas'
+  openDaily: true
+  what3words: salaried.relatives.reconnect
+  parishGiving: denston-st-nicholas-newmarket
+  photo: { src: /images/denston/denston.jpg, small: true, alt: "St Nicholas', Denston, from the south" }
+  sidePhotos:
+    - { src: /images/denston/lamb-detail.jpg, small: true, alt: Carved detail }
+    - { src: /images/denston/finials.jpg, alt: Pew finials }
+  intro: St Nicholas' is one of the two Bansfield churches listed in Simon Jenkins' England's Thousand Best Churches.
+  history: A church stood on this site in the twelfth century. Apart from the tower, the present building was rebuilt almost from the ground in the late fifteenth century, when a college of chantry priests, one master and two co-brethren, was joined to the parish church under the will of John Denston.
+  blurb: Largely rebuilt in the late fifteenth century, once home to a chantry college, and listed among England's thousand best churches.
+  map: https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2448.313022766213!2d0.5688730509083519!3d52.14681687147167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d85a7d8f9326a5%3A0x7b3da26742a0bc7e!2sDenston%2C%20Newmarket!5e0!3m2!1sen!2suk!4v1582478251244!5m2!1sen!2suk
+  pages:
+    - { label: History, href: /denston/history/ }
+    - { label: Links, href: /denston/links.html }
+
+- id: lidgate
+  village: Lidgate
+  dedication: St Mary's
+  openDaily: false
+  what3words: plug.weddings.dugouts
+  parishGiving: lidgate-st-mary-newmarket
+  photo: { src: /images/benefice/lidgate-bailey-pond.jpg, alt: The bailey pond at Lidgate }
+  sidePhotos:
+    - { src: /images/lidgate/lidgate2.jpg, small: true, alt: "St Mary's, Lidgate" }
+    - { src: /images/benefice/lidgate-castle-wall.jpg, alt: Lidgate castle wall }
+  intro: St Mary's is magnificently set on a knoll overlooking its village, within one of the baileys of a motte and bailey castle.
+  history: This is a very early site, where evidence of Roman occupation has been found. The north side of the churchyard is bounded by part of the castle's outer moat. The church is also known for the medieval graffiti on its walls.
+  blurb: Set within the bailey of a motte and bailey castle, and known for the medieval graffiti on its walls.
+  map: https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d4891.362348830786!2d0.5134523174743655!3d52.19466778125142!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2suk!4v1582470043132!5m2!1sen!2suk
+  pages:
+    - { label: History, href: /lidgate/history/ }
+    - { label: Links, href: /lidgate/links.html }
+
+- id: ousden
+  village: Ousden
+  dedication: St Peter's
+  openDaily: true
+  what3words: public.attitudes.gentle
+  photo: { src: /images/ousden/ousden.gif, small: true, alt: "St Peter's, Ousden" }
+  sidePhotos:
+    - { src: /images/wickhambrook/localhistory/benefice_villages/ousden_church.gif, small: true, alt: "St Peter's, Ousden, in an early photograph" }
+    - { src: /images/wickhambrook/localhistory/benefice_villages/ousden_hall.gif, small: true, alt: Ousden Hall }
+  intro: Welcome to this ancient church, built by the Normans over 800 years ago.
+  history: St Peter's stands in an elevated position on a ridge overlooking the valley of the River Kennett, to the west of the main centre of the village. Christian worship has been offered here ever since it was built.
+  blurb: A Norman church over 800 years old, open every day, on a ridge above the Kennett valley.
+  map: https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2444.9857482744246!2d0.5397948324305082!3d52.20730648172716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2suk!4v1582478533497!5m2!1sen!2suk
+  pages:
+    - { label: History, href: /ousden/history/ }
+    - { label: Links, href: /ousden/links.html }
+
+- id: stansfield
+  village: Stansfield
+  dedication: All Saints
+  openDaily: false
+  what3words: bulbs.couple.annotated
+  parishGiving: stansfield-all-saints-sudbury
+  photo: { src: /images/stansfield/stansfield.jpg, small: true, alt: All Saints, Stansfield }
+  sidePhotos:
+    - { src: /images/wickhambrook/localhistory/benefice_villages/stansfield_rectory.gif, small: true, alt: The old rectory, Stansfield }
+    - { src: /images/stansfield/stansfield-donate-500.jpg, alt: All Saints, Stansfield }
+  intro: All Saints is large for a small village and stands near the top of Plough Hill. Its tower can be seen for miles, especially when it is lit up at night.
+  history: The present church, built of flint rubble faced with freestone, is the latest of many churches to have stood on this site.
+  blurb: A large church near the top of Plough Hill, whose tower can be seen for miles.
+  map: https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2448.5870160720556!2d0.6040712883997021!3d52.141833481926966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2suk!4v1582478719630!5m2!1sen!2suk
+  pages:
+    - { label: History, href: /stansfield/history/ }
+    - { label: Links, href: /stansfield/links.html }
+
+- id: stradishall
+  village: Stradishall
+  dedication: St Margaret's
+  openDaily: true
+  what3words: scorching.headboard.sleepless
+  photo: { src: /images/stradishall/outside.jpg, alt: "St Margaret's, Stradishall" }
+  sidePhotos:
+    - { src: /images/stradishall/chancel.jpg, alt: The chancel }
+    - { src: /images/stradishall/font.jpg, alt: The font }
+  intro: A church with 30 acres was recorded at Stradishall in the Domesday Book.
+  history: The Norman chancel was heightened and lengthened around 1250. In the early fourteenth century the east window was replaced with one of exceptional quality, with reticulated tracery.
+  blurb: Recorded in the Domesday Book, open every day, and home to Strad Fest each September.
+  map: https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d4897.02090465385!2d0.5523314769087687!3d52.14322605704403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2suk!4v1582478917679!5m2!1sen!2suk
+  pages:
+    - { label: History, href: /stradishall/history/ }
+    - { label: Links, href: /stradishall/links.html }
+
+- id: wickhambrook
+  village: Wickhambrook
+  dedication: All Saints
+  openDaily: false
+  what3words: activates.varieties.deleting
+  parishGiving: wickhambrook-all-saints-newmarket
+  photo: { src: /images/wickhambrook/history/outside_se.jpg, small: true, alt: "All Saints, Wickhambrook, from the south-east" }
+  sidePhotos:
+    - { src: /images/wickhambrook/history/nave_roof.jpg, small: true, alt: The nave roof }
+    - { src: /images/wickhambrook/history/sanctuary.jpg, small: true, alt: The sanctuary }
+  intro: All Saints is a Grade I listed building, and people have worshipped God here for over 1,000 years.
+  history: The church stands near Badmondisfield Hall, which is recorded in the Domesday Book and gave the Benefice its name.
+  blurb: A Grade I listed church near Badmondisfield Hall, which gave the Benefice its name.
+  notes: To make sure the church is open for your visit, and for information including facilities for disabled people, see the <a href="/wickhambrook/notices/">Notices</a> page.
+  map: https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2447.56213058145!2d0.5597861009089337!3d52.16047237046464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d85a9183a0da4b%3A0x16d0947c25dd03c1!2sNewmarket%20CB8%208XH!5e0!3m2!1sen!2suk!4v1582411682284!5m2!1sen!2suk
+  pages:
+    - { label: History, href: /wickhambrook/history/ }
+    - { label: Fund raising, href: /wickhambrook/funds/ }
+    - { label: Notices, href: /wickhambrook/notices/ }
+    - { label: Visitors' Book, href: /wickhambrook/visitors/ }
+    - { label: Parish Register, href: /wickhambrook/registry/ }
+    - { label: Local History, href: /wickhambrook/localhistory/ }
+    - { label: Links, href: /wickhambrook/links/ }

@@ -1,0 +1,11 @@
+---
+export type Crumb = { label: string; href?: string };
+interface Props { trail: Crumb[] }
+const { trail } = Astro.props;
+---
+<nav class="crumbs" aria-label="Breadcrumb" data-pagefind-ignore>
+  <ol>
+    <li><a href="/">Home</a></li>
+    {trail.map((c) => (c.href ? <li><a href={c.href}>{c.label}</a></li> : <li aria-current="page">{c.label}</li>))}
+  </ol>
+</nav>

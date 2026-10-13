@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+
+// Newsletters are the migrated pages named news/YY-MM.
+const issues = (await getCollection('pages', (p) => /^news\/\d\d-\d\d$/.test(p.id)))
+  .map((p) => p.id.slice(5))
+  .sort()
+  .reverse()
+  .slice(0, 3)
+  .map((code, i) => {
+    const [yy, mm] = code.split('-').map(Number);
+    return {
+      href: `/news/${code}.html`,
+      label: ['Latest issue', 'Previous issue', 'Earlier issue'][i],
+      month: new Date(2000 + yy, mm - 1, 1).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' }),
+    };
+  });
+const [rota] = await getCollection('rotas');
+---
+<BaseLayout title="News and newsletters" description="News and parish newsletters from the Bansfield Benefice.">
+  <PageHero title="News and newsletters" trail={[{ label: 'News' }]} lede="The latest from around the Benefice, plus our parish newsletters." />
+
+  <section class="section">
+    <div class="wrap split">
+      <div class="main">
+        <h2 style="margin-bottom:20px">Latest news</h2>
+        {rota && (
+          <article class="card">
+            <p style="font-size:15px;font-weight:700;color:var(--green-link)">{rota.data.month} {rota.data.year}</p>
+            <h3>The {rota.data.month} service rota is now available</h3>
+            <p class="muted">See where and when services are happening across our seven churches this month.</p>
+            <a class="btn btn-primary" href="/services/">See this month's services</a>
+          </article>
+        )}
+        <article class="card" style="margin-top:16px">
+          <h3>Rector's view</h3>
+          <p class="muted">For all current news from the Benefice, read our blog.</p>
+          <a class="btn btn-ghost" href="https://bansfieldbenefice.blogspot.com/">Read the blog</a>
+        </article>
+
+        <h2 style="margin:48px 0 8px">Parish newsletters</h2>
+        <p class="section-intro">Newsletters published by the incumbent, or by the Rural Dean during a vacancy.</p>
+        <div class="grid g-200">
+          {issues.map((n) => <a class="tile small" href={n.href}><span class="tile-t">{n.label}</span><span class="tile-s">{n.month}</span></a>)}
+        </div>
+        <a href="/news/archive.html" style="display:inline-block;margin-top:16px;font-weight:700">All newsletters</a>
+      </div>
+      <aside class="side">
+        <div class="panel" style="display:flex;flex-direction:column;gap:12px">
+          <h2 style="margin:0">Follow us</h2>
+          <p style="margin:0">Photos, news and recordings from around the Benefice.</p>
+          <a href="https://www.facebook.com/bansfieldbenefice" style="font-weight:700">Facebook</a>
+          <a href="https://bansfieldbenefice.blogspot.com/" style="font-weight:700">Our blog</a>
+          <a href="https://www.youtube.com/user/bansfieldbenefice" style="font-weight:700">YouTube</a>
+          <a href="https://www.flickr.com/photos/bansfieldbenefice/albums" style="font-weight:700">Photo albums on Flickr</a>
+          <a href="/benefice/contact.html#subscribe" style="font-weight:700">Join our mailing list</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

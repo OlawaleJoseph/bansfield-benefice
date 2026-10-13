@@ -1,0 +1,7 @@
+---
+interface Props { daily: boolean; long?: boolean; style?: string }
+const { daily, long = false, style } = Astro.props;
+---
+{daily
+  ? <span class="pill pill-daily" style={style}>Open daily, 10am–3pm</span>
+  : <span class="pill pill-svc" style={style}>{long ? 'Open for services, or by arrangement' : 'Open for services'}</span>}

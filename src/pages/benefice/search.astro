@@ -1,0 +1,94 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+
+const churches = await getCollection('churches');
+const groups = [
+  { name: 'Worship', pages: [
+    { title: 'Services and rotas', href: '/services/' },
+    { title: 'Baptisms, weddings and funerals', href: '/benefice/lifeevents.html' },
+    { title: 'Common Worship texts', href: '/services/#worship' },
+    { title: 'Special services', href: '/services/special/' },
+  ] },
+  { name: 'Churches', pages: [{ title: 'Our seven churches', href: '/churches/' }, ...churches.map((c) => ({ title: c.data.village, href: `/${c.id}/` }))] },
+  { name: 'Visiting', pages: [
+    { title: 'Visit a church', href: '/visits/' },
+    { title: 'Events', href: '/events/' },
+    { title: 'News and newsletters', href: '/news/' },
+  ] },
+  { name: 'About us', pages: [
+    { title: 'About the Benefice', href: '/benefice/' },
+    { title: 'Contact', href: '/benefice/contact.html' },
+    { title: 'Safeguarding', href: '/notices/safeguarding.html' },
+    { title: 'Policies and notices', href: '/notices/privacypolicy.html' },
+    { title: 'Full sitemap', href: '/benefice/sitemap.html' },
+  ] },
+];
+---
+<BaseLayout title="Search" description="Search the Bansfield Benefice website.">
+  <section class="page-hero" data-pagefind-ignore>
+    <div class="wrap">
+      <Breadcrumbs trail={[{ label: 'Search' }]} />
+      <h1 style="margin-bottom:20px">Search the site</h1>
+      <form role="search" action="/benefice/search.html" method="get" id="search-form">
+        <label for="q" style="display:block;font-weight:700;margin-bottom:8px">What are you looking for?</label>
+        <input id="q" name="q" class="search-input" type="search" placeholder="Try “weddings”, “Denston” or “rota”" autocomplete="off" />
+      </form>
+    </div>
+  </section>
+  <section style="padding:40px 0 72px" data-pagefind-ignore>
+    <div class="wrap">
+      <p class="form-note" id="search-count" aria-live="polite" style="margin:0 0 12px">Start typing to search, or browse the main pages below.</p>
+      <div id="search-results" style="margin-bottom:48px"></div>
+      <h2 style="margin-bottom:20px">Sitemap</h2>
+      <div class="grid sitemap" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:32px">
+        {groups.map((g) => (
+          <div>
+            <h3>{g.name}</h3>
+            <ul>{g.pages.map((p) => <li><a href={p.href}>{p.title}</a></li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Full-text search over every page, using the Pagefind index built after `astro build`.
+  type Result = { url: string; excerpt: string; meta: { title?: string } };
+  type Pagefind = { debouncedSearch: (q: string) => Promise<{ results: { data: () => Promise<Result> }[] } | null> };
+
+  const input = document.getElementById('q') as HTMLInputElement;
+  const count = document.getElementById('search-count')!;
+  const results = document.getElementById('search-results')!;
+  const indexPath = '/pagefind/pagefind.js';
+  let pagefind: Promise<Pagefind> | null = null;
+  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+  async function run() {
+    const q = input.value.trim();
+    if (!q) {
+      results.innerHTML = '';
+      count.textContent = 'Start typing to search, or browse the main pages below.';
+      return;
+    }
+    try {
+      pagefind ??= import(/* @vite-ignore */ indexPath);
+      const search = await (await pagefind).debouncedSearch(q);
+      if (!search) return; // superseded by a newer query
+      const hits = await Promise.all(search.results.slice(0, 40).map((r) => r.data()));
+      count.textContent = `${search.results.length} ${search.results.length === 1 ? 'page' : 'pages'} found`;
+      results.innerHTML = hits.length
+        ? hits.map((h) => `<a class="res" href="${esc(h.url)}"><span class="res-t">${esc(h.meta.title ?? h.url)}</span><span class="res-s">${h.excerpt}</span></a>`).join('')
+        : '<p style="margin:0;padding:20px;background:#F2EFE8;border-radius:10px">Nothing matched. Try a shorter word, or <a href="/benefice/contact.html">ask us</a>.</p>';
+    } catch {
+      count.textContent = 'Search is unavailable right now. Try the sitemap below.';
+    }
+  }
+
+  input.addEventListener('input', run);
+  document.getElementById('search-form')!.addEventListener('submit', (e) => { e.preventDefault(); run(); });
+  const initial = new URLSearchParams(location.search).get('q');
+  if (initial) { input.value = initial; run(); }
+</script>

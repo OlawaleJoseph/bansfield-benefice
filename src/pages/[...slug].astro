@@ -1,0 +1,13 @@
+---
+// Every migrated page that is a file, e.g. /cowlinge/history/interior.html
+import { getCollection } from 'astro:content';
+import MigratedPage from '../components/MigratedPage.astro';
+import { isPolicy } from '../data/policies';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages', (p) => !p.id.endsWith('index') && !isPolicy(p.id));
+  return pages.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+---
+<MigratedPage entry={entry} />

@@ -1,0 +1,112 @@
+{
+  "cowlinge": {
+    "map": "https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d2447.2574282676173!2d0.5102910489349365!3d52.16601287385711!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2suk!4v1582465937001!5m2!1sen!2suk",
+    "notes": "",
+    "pages": [
+      {
+        "href": "/cowlinge/history/",
+        "label": "History"
+      },
+      {
+        "href": "/cowlinge/links.html",
+        "label": "Links"
+      }
+    ]
+  },
+  "denston": {
+    "map": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2448.313022766213!2d0.5688730509083519!3d52.14681687147167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d85a7d8f9326a5%3A0x7b3da26742a0bc7e!2sDenston%2C%20Newmarket!5e0!3m2!1sen!2suk!4v1582478251244!5m2!1sen!2suk",
+    "notes": "",
+    "pages": [
+      {
+        "href": "/denston/history/",
+        "label": "History"
+      },
+      {
+        "href": "/denston/links.html",
+        "label": "Links"
+      }
+    ]
+  },
+  "lidgate": {
+    "map": "https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d4891.362348830786!2d0.5134523174743655!3d52.19466778125142!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2suk!4v1582470043132!5m2!1sen!2suk",
+    "notes": "",
+    "pages": [
+      {
+        "href": "/lidgate/history/",
+        "label": "History"
+      },
+      {
+        "href": "/lidgate/links.html",
+        "label": "Links"
+      }
+    ]
+  },
+  "ousden": {
+    "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2444.9857482744246!2d0.5397948324305082!3d52.20730648172716!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2suk!4v1582478533497!5m2!1sen!2suk",
+    "notes": "",
+    "pages": [
+      {
+        "href": "/ousden/history/",
+        "label": "History"
+      },
+      {
+        "href": "/ousden/links.html",
+        "label": "Links"
+      }
+    ]
+  },
+  "stansfield": {
+    "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d2448.5870160720556!2d0.6040712883997021!3d52.141833481926966!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2suk!4v1582478719630!5m2!1sen!2suk",
+    "notes": "",
+    "pages": [
+      {
+        "href": "/stansfield/history/",
+        "label": "History"
+      },
+      {
+        "href": "/stansfield/links.html",
+        "label": "Links"
+      }
+    ]
+  },
+  "stradishall": {
+    "map": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d4897.02090465385!2d0.5523314769087687!3d52.14322605704403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2suk!4v1582478917679!5m2!1sen!2suk",
+    "notes": "",
+    "pages": [
+      {
+        "href": "/stradishall/history/",
+        "label": "History"
+      },
+      {
+        "href": "/stradishall/links.html",
+        "label": "Links"
+      }
+    ]
+  },
+  "wickhambrook": {
+    "map": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2447.56213058145!2d0.5597861009089337!3d52.16047237046464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47d85a9183a0da4b%3A0x16d0947c25dd03c1!2sNewmarket%20CB8%208XH!5e0!3m2!1sen!2suk!4v1582411682284!5m2!1sen!2suk",
+    "notes": "<p>To ensure the church is open for your visit click on the <a\n  href=\"notices/\">Notices</a> page.  Further general information, including\n  facilities for disabled people, can be found on the <a\n  href=\"notices/\">Notices</a> page.</p>",
+    "pages": [
+      {
+        "href": "/wickhambrook/history/",
+        "label": "History"
+      },
+      {
+        "href": "/wickhambrook/notices/",
+        "label": "Notices"
+      },
+      {
+        "href": "/wickhambrook/visitors/",
+        "label": "Visitors' Book"
+      },
+      {
+        "href": "/wickhambrook/registry/",
+        "label": "Parish Register"
+      },
+      {
+        "href": "/wickhambrook/localhistory/",
+        "label": "Local History"
+      }
+    ]
+  }
+}

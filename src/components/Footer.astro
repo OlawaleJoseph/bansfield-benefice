@@ -1,0 +1,49 @@
+---
+import { CONTACT_EMAIL, DSO, RECTOR, SOCIAL, tel } from '../data/site';
+---
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="f-grid">
+      <div class="f-col">
+        <p class="f-name">Bansfield Benefice</p>
+        <p>Cowlinge · Denston · Lidgate · Ousden · Stansfield · Stradishall · Wickhambrook</p>
+        <p class="f-small">The parishes are registered charities. <a href="/notices/charitystatus.html">Charity status</a></p>
+        <div class="f-logos">
+          <a href="https://www.cofesuffolk.org/"><img src="/images/header/diocese-shield_50.gif" width="46" height="50" alt="Diocese of St Edmundsbury &amp; Ipswich" /></a>
+          <a href="https://www.churchofengland.org/"><img src="/images/header/cofe_logo_50a.gif" width="50" height="50" alt="Church of England" /></a>
+        </div>
+      </div>
+      <div class="f-col">
+        <p class="f-head">Contact</p>
+        <span>Rector: {RECTOR.name}</span>
+        <a href={tel(RECTOR.tel)}>{RECTOR.tel}</a>
+        <a href={`mailto:${CONTACT_EMAIL}`} style="word-break:break-word">{CONTACT_EMAIL}</a>
+        <a href="/benefice/contact.html">All contacts</a>
+      </div>
+      <div class="f-col">
+        <p class="f-head">Explore</p>
+        <a href="/services/">Services</a>
+        <a href="/visits/">Visit a church</a>
+        <a href="/events/">Events</a>
+        <a href="/news/">News &amp; newsletters</a>
+        <a href="/benefice/lifeevents.html">Baptisms, weddings &amp; funerals</a>
+      </div>
+      <div class="f-col f-safe">
+        <p class="f-head">Safeguarding</p>
+        <p>Concerned about a child or vulnerable adult? Call the Rector on {RECTOR.tel} or the Diocesan Safeguarding Officer on {DSO.tel}.</p>
+        <a href="/notices/safeguarding.html" style="font-weight:700">Our safeguarding policy</a>
+      </div>
+    </div>
+    <div class="f-bottom">
+      <nav aria-label="Policies">
+        <a href="/notices/privacypolicy.html">Privacy</a>
+        <a href="/notices/cookiespolicy.html">Cookies</a>
+        <a href="/notices/copyright.html">Copyright</a>
+        <a href="/benefice/sitemap.html">Sitemap</a>
+      </nav>
+      <nav aria-label="Social media">
+        {SOCIAL.map((s) => <a href={s.href}>{s.label}</a>)}
+      </nav>
+    </div>
+  </div>
+</footer>

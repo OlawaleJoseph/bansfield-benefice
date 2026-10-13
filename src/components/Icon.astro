@@ -1,0 +1,15 @@
+---
+// Inline stroke icons (decorative).
+const PATHS = {
+  calendar: 'M3 5h18v16H3zM3 10h18M8 3v4M16 3v4',
+  pin: 'M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11zM12 12.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
+  heart: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z',
+  mail: 'M4 5h16v14H4zM4 6l8 7 8-7',
+  menu: 'M4 7h16M4 12h16M4 17h16',
+  close: 'M6 6l12 12M18 6L6 18',
+  search: 'M20 20l-4-4M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14z',
+};
+interface Props { name: keyof typeof PATHS; size?: number; strokeWidth?: number }
+const { name, size = 22, strokeWidth = 2 } = Astro.props;
+---
+<svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width={strokeWidth} stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={PATHS[name]}></path></svg>
