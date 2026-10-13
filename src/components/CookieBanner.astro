@@ -1,0 +1,16 @@
+---
+// Asks before Google Analytics is loaded. Shown by scripts/consent.ts until the visitor chooses;
+// the footer's "Cookie settings" link brings it back. Without JavaScript, Analytics never loads.
+---
+<section class="cookie-banner" id="cookie-banner" aria-labelledby="cookie-title" data-pagefind-ignore hidden>
+  <div class="wrap">
+    <div class="cb-text">
+      <h2 id="cookie-title">Can we count your visit?</h2>
+      <p>With your permission we use Google Analytics cookies to see which pages people use, so we can improve the site. We don't use them for advertising. <a href="/notices/cookiespolicy.html">Cookie policy</a></p>
+    </div>
+    <div class="btn-row">
+      <button type="button" class="btn btn-white" data-consent="granted">Accept analytics</button>
+      <button type="button" class="btn btn-white" data-consent="denied">Reject</button>
+    </div>
+  </div>
+</section>

@@ -6,7 +6,8 @@ import '@fontsource/source-serif-4/600.css';
 import '../styles/site.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { GA_ID, type NavKey } from '../data/site';
+import CookieBanner from '../components/CookieBanner.astro';
+import type { NavKey } from '../data/site';
 
 interface Props {
   title: string;
@@ -44,13 +45,6 @@ const ogImage = new URL(image, Astro.site);
     <meta property="og:image" content={ogImage} />
     <meta property="og:locale" content="en_GB" />
     <meta name="twitter:card" content="summary_large_image" />
-    <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
-    <script is:inline define:vars={{ GA_ID }}>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', GA_ID);
-    </script>
     <slot name="head" />
   </head>
   <body>
@@ -59,8 +53,10 @@ const ogImage = new URL(image, Astro.site);
       <slot />
     </main>
     <Footer />
+    <CookieBanner />
     <script>
       import '../scripts/site';
+      import '../scripts/consent';
     </script>
   </body>
 </html>
