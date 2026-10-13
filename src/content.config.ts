@@ -20,20 +20,22 @@ const pages = defineCollection({
     async load({ store, parseData, generateDigest, logger, watcher }) {
       const root = path.resolve(PAGES_DIR);
       const files = (await fs.readdir(root, { recursive: true })).filter((f) => f.endsWith('.html'));
+      const idFor = (rel: string) => rel.split(path.sep).join('/').replace(/\.html$/, '');
       const loadFile = async (rel: string) => {
         const raw = await fs.readFile(path.join(root, rel), 'utf8');
-        const m = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
+        const m = raw.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
         if (!m) return logger.warn(`${rel}: missing front matter, skipped`);
-        const id = rel.split(path.sep).join('/').replace(/\.html$/, '');
+        const id = idFor(rel);
         const data = await parseData({ id, data: YAML.parse(m[1]) ?? {} });
         store.set({ id, data, body: m[2], rendered: { html: m[2] }, digest: generateDigest(raw), filePath: path.join(PAGES_DIR, rel) });
       };
       store.clear();
       await Promise.all(files.map(loadFile));
       watcher?.add(root);
-      watcher?.on('change', async (p) => {
-        if (p.startsWith(root) && p.endsWith('.html')) await loadFile(path.relative(root, p));
-      });
+      const ours = (p: string) => p.startsWith(root) && p.endsWith('.html');
+      watcher?.on('change', async (p) => ours(p) && (await loadFile(path.relative(root, p))));
+      watcher?.on('add', async (p) => ours(p) && (await loadFile(path.relative(root, p))));
+      watcher?.on('unlink', (p) => ours(p) && store.delete(idFor(path.relative(root, p))));
     },
   },
   schema: z.object({

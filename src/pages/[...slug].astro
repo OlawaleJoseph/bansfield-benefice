@@ -3,9 +3,10 @@
 import { getCollection } from 'astro:content';
 import MigratedPage from '../components/MigratedPage.astro';
 import { isPolicy } from '../data/policies';
+import { isIndexId } from '../data/site';
 
 export async function getStaticPaths() {
-  const pages = await getCollection('pages', (p) => !p.id.endsWith('index') && !isPolicy(p.id));
+  const pages = await getCollection('pages', (p) => !isIndexId(p.id) && !isPolicy(p.id));
   return pages.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 const { entry } = Astro.props;

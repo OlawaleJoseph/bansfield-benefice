@@ -66,7 +66,7 @@ const topics = [
 
   <section class="section-tight" style="padding-bottom:72px" id="subscribe">
     <div class="wrap" style="display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start">
-      <form class="form" style="flex:3 1 480px;min-width:0" action={MAILCHIMP} method="post" target="_blank" novalidate>
+      <form class="form" style="flex:3 1 480px;min-width:0" action={MAILCHIMP} method="post" target="_blank">
         <h2>Subscribe to our mailing list</h2>
         <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
           <label class="field">Email address (required)<input type="email" name="EMAIL" required autocomplete="email" /></label>
@@ -88,17 +88,17 @@ const topics = [
       </div>
     </div>
   </section>
-</BaseLayout>
 
-<script>
-  // Compose an email to the right person; there's no server behind this form.
-  const form = document.getElementById('message-form') as HTMLFormElement;
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-    if (!form.reportValidity()) return;
-    const f = form.elements as unknown as Record<string, HTMLInputElement & HTMLSelectElement>;
-    const subject = `Website enquiry: ${f.topic.selectedOptions[0].text}`;
-    const body = `${f.message.value}\n\n${f.name.value}\n${f.email.value}`;
-    location.href = `mailto:${f.topic.value}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  });
-</script>
+  <script>
+    // Compose an email to the right person; there's no server behind this form.
+    const form = document.getElementById('message-form') as HTMLFormElement;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const f = form.elements as unknown as Record<string, HTMLInputElement & HTMLSelectElement>;
+      const subject = `Website enquiry: ${f.topic.selectedOptions[0].text}`;
+      const body = `${f.message.value}\n\n${f.name.value}\n${f.email.value}`;
+      location.href = `mailto:${f.topic.value}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+  </script>
+</BaseLayout>

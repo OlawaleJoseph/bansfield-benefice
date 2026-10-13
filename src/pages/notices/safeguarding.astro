@@ -11,6 +11,9 @@ const officers = [...table.matchAll(/<tr>\s*<td>([^<]+)<\/td>\s*<td>([\s\S]*?)<\
   parish: m[1].trim(),
   name: m[2].replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(),
 }));
+if (!officers.length) {
+  throw new Error('No Parish Safeguarding Officers found in src/content/pages/benefice/officials.html (expected a table after id="safeguarding").');
+}
 ---
 <BaseLayout title="Safeguarding" description="Safeguarding in the Bansfield Benefice: who to call if you're worried about a child or vulnerable adult.">
   <PageHero title="Safeguarding" trail={[{ label: 'Safeguarding' }]}

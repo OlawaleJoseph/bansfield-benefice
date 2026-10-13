@@ -139,37 +139,38 @@ const today = cotd[(new Date().getDay() + 6) % 7];
       </div>
     </div>
   </section>
+
+  <!-- "<" is escaped so the text can never close this script tag early -->
+  <script type="application/json" id="cotd-data" set:html={JSON.stringify(cotd).replace(/</g, '\\u003c')} />
+
+  <script>
+    // Hero slideshow
+    const slides = [...document.querySelectorAll<HTMLImageElement>('[data-slides] img')];
+    if (slides.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      let i = 0;
+      setInterval(() => {
+        slides[i].classList.remove('on');
+        i = (i + 1) % slides.length;
+        slides[i].classList.add('on');
+      }, 6000);
+    }
+
+    // Church of the day for the visitor's own weekday (the build date may differ)
+    type Cotd = { slug: string; village: string; name: string; text: string; img: string; small: boolean; alt: string };
+    const data = document.getElementById('cotd-data');
+    if (data) {
+      const c = (JSON.parse(data.textContent || '[]') as Cotd[])[(new Date().getDay() + 6) % 7];
+      const fig = document.querySelector<HTMLElement>('[data-cotd-img] figure')!;
+      const img = fig.querySelector('img')!;
+      document.querySelector('[data-cotd-name]')!.textContent = c.name;
+      document.querySelector('[data-cotd-text]')!.textContent = c.text;
+      const link = document.querySelector<HTMLAnchorElement>('[data-cotd-link]')!;
+      link.href = `/${c.slug}/`;
+      link.textContent = `Discover ${c.village}`;
+      img.src = c.img;
+      img.alt = c.alt;
+      fig.classList.toggle('small', c.small);
+      fig.style.setProperty('--bg', c.small ? `url('${c.img}')` : '');
+    }
+  </script>
 </BaseLayout>
-
-<script type="application/json" id="cotd-data" set:html={JSON.stringify(cotd)} />
-
-<script>
-  // Hero slideshow
-  const slides = [...document.querySelectorAll<HTMLImageElement>('[data-slides] img')];
-  if (slides.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    let i = 0;
-    setInterval(() => {
-      slides[i].classList.remove('on');
-      i = (i + 1) % slides.length;
-      slides[i].classList.add('on');
-    }, 6000);
-  }
-
-  // Church of the day for the visitor's own weekday (the build date may differ)
-  type Cotd = { slug: string; village: string; name: string; text: string; img: string; small: boolean; alt: string };
-  const data = document.getElementById('cotd-data');
-  if (data) {
-    const c = (JSON.parse(data.textContent || '[]') as Cotd[])[(new Date().getDay() + 6) % 7];
-    const fig = document.querySelector<HTMLElement>('[data-cotd-img] figure')!;
-    const img = fig.querySelector('img')!;
-    document.querySelector('[data-cotd-name]')!.textContent = c.name;
-    document.querySelector('[data-cotd-text]')!.textContent = c.text;
-    const link = document.querySelector<HTMLAnchorElement>('[data-cotd-link]')!;
-    link.href = `/${c.slug}/`;
-    link.textContent = `Discover ${c.village}`;
-    img.src = c.img;
-    img.alt = c.alt;
-    fig.classList.toggle('small', c.small);
-    fig.style.setProperty('--bg', c.small ? `url('${c.img}')` : '');
-  }
-</script>

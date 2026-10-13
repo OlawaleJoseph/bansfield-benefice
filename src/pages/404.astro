@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { NAV } from '../data/site';
+---
+<BaseLayout title="Page not found" noindex>
+  <PageHero title="Sorry, we can't find that page" trail={[{ label: 'Page not found' }]}
+    lede="It may have moved when the website was updated. Try searching, or use one of the links below." />
+  <section style="padding:48px 0 72px">
+    <div class="wrap">
+      <form role="search" action="/benefice/search.html" method="get" style="max-width:560px;margin-bottom:40px">
+        <label for="q404" style="display:block;font-weight:700;margin-bottom:8px">Search the site</label>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <input id="q404" name="q" class="search-input" type="search" style="flex:1 1 240px" />
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+      <h2 style="margin-bottom:12px">Popular pages</h2>
+      <ul>
+        {NAV.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        <li><a href="/benefice/sitemap.html">Full sitemap</a></li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

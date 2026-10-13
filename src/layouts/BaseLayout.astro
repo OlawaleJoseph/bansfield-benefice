@@ -14,11 +14,16 @@ interface Props {
   nav?: NavKey;
   /** Full <title>, when " — Bansfield Benefice" shouldn't be appended. */
   fullTitle?: string;
+  /** Social sharing image (site path). */
+  image?: string;
+  /** Keep the page out of search engines and the site search (e.g. the 404 page). */
+  noindex?: boolean;
 }
 const DEFAULT_DESCRIPTION =
   'The Bansfield Benefice is the collective name for the Parishes of Cowlinge, Denston, Lidgate, Ousden, Stansfield, Stradishall and Wickhambrook in the Diocese of St Edmundsbury and Ipswich, Suffolk.';
-const { title, description = DEFAULT_DESCRIPTION, nav = 'none', fullTitle } = Astro.props;
+const { title, description = DEFAULT_DESCRIPTION, nav = 'none', fullTitle, image = '/images/stradishall/outside.jpg', noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
 ---
 <!doctype html>
 <html lang="en-GB">
@@ -27,13 +32,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle ?? `${title} — Bansfield Benefice`}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="alternate" type="application/atom+xml" title="Bansfield Benefice blog" href="https://bansfieldbenefice.blogspot.com/feeds/posts/default" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:site_name" content="Bansfield Benefice" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="en_GB" />
+    <meta name="twitter:card" content="summary_large_image" />
     <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
     <script is:inline define:vars={{ GA_ID }}>
       window.dataLayer = window.dataLayer || [];
@@ -45,7 +55,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </head>
   <body>
     <Header current={nav} />
-    <main id="main" data-pagefind-body>
+    <main id="main" data-pagefind-body={noindex ? undefined : true}>
       <slot />
     </main>
     <Footer />

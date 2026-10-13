@@ -1,0 +1,20 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props { e: CollectionEntry<'events'>['data'] }
+const { e } = Astro.props;
+// Event dates have no time, so they're stored as midnight UTC; format them in UTC too.
+const fmt = (o: Intl.DateTimeFormatOptions) => e.date.toLocaleDateString('en-GB', { ...o, timeZone: 'UTC' });
+---
+<li class="ev" data-date={e.date.toISOString().slice(0, 10)} data-parish={e.parish}>
+  <div class="ev-date">
+    <div class="ev-day">{fmt({ day: 'numeric' })}</div>
+    <div class="ev-mon">{fmt({ month: 'short' })}</div>
+  </div>
+  <div class="ev-body">
+    <p class="ev-title">{e.title}</p>
+    <p class="ev-meta">{e.place} · {e.time}</p>
+    {e.note && <p class="ev-note">{e.note}</p>}
+  </div>
+  {e.link && <a class="ev-link" href={e.link}>{e.linkText}</a>}
+</li>

@@ -80,12 +80,27 @@ function fixImg(tag) {
   return tag.replace(/\s+\/?>$/, '>');
 }
 
+const ALT = {
+  '/images/jamclub/2000_poster1.jpg': 'JAM Club Easter 2000 poster 1',
+  '/images/jamclub/2000_poster2.jpg': 'JAM Club Easter 2000 poster 2',
+  '/images/jamclub/2001_banner.jpg': 'JAM Club Easter 2001 banner',
+  '/images/jamclub/2001_banner2.jpg': 'JAM Club Easter 2001 banner 2',
+  '/images/jamclub/2001_banner3.jpg': 'JAM Club Easter 2001 banner 3',
+  '/images/jamclub/2001_banner4.jpg': 'JAM Club Easter 2001 banner 4',
+  '/images/jamclub/2001_easter_garden.jpg': 'The Easter garden made at JAM Club, 2001',
+  '/images/jamclub/2001_poster1.jpg': 'JAM Club Easter 2001 poster',
+};
+
 export function cleanContent(c) {
   c = c.replace(/<div style="float:right;margin:0 0 10px 10px;">\s*<!--news start-->[\s\S]*?<!--news end-->\s*<\/div>/g, '');
   c = c.replace(/<!--news start-->[\s\S]*?<!--news end-->/g, '');
   c = c.replace(/<!--(?!\[)[\s\S]*?-->/g, '');
   c = c.replace(/https?:\/\/(?:www\.)?bansfieldbenefice\.org\.uk(?=[/"'])/g, '');
   c = c.replace(/<img\b[^>]*>/g, fixImg);
+  // Images must load over https on an https page
+  c = c.replace(/(<img\b[^>]*\ssrc=")http:\/\//g, '$1https://');
+  // Images the old site left without alt text (hand-written alt for the few that matter)
+  c = c.replace(/<img\b(?![^>]*\salt=)([^>]*\ssrc="([^"]+)")/g, (_, rest, src) => `<img alt="${ALT[src] ?? ''}"${rest}`);
   // Fixed pixel widths from the old 740px table layout
   const sized = /(<(?:table|td|th|p|div|caption|iframe|ul)\b[^>]*?)\s(?:width|height)="\d+%?"/g;
   c = c.replace(sized, '$1').replace(sized, '$1');

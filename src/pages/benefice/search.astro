@@ -52,43 +52,47 @@ const groups = [
       </div>
     </div>
   </section>
+
+  <script>
+    // Full-text search over every page, using the Pagefind index built after `astro build`.
+    type Result = { url: string; excerpt: string; meta: { title?: string } };
+    type Pagefind = { debouncedSearch: (q: string) => Promise<{ results: { data: () => Promise<Result> }[] } | null> };
+
+    const input = document.getElementById('q') as HTMLInputElement;
+    const count = document.getElementById('search-count')!;
+    const results = document.getElementById('search-results')!;
+    const indexPath = '/pagefind/pagefind.js';
+    let pagefind: Promise<Pagefind> | null = null;
+    const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
+
+    async function run() {
+      const q = input.value.trim();
+      const url = new URL(location.href);
+      if (q) url.searchParams.set('q', q); else url.searchParams.delete('q');
+      history.replaceState(null, '', url);
+      if (!q) {
+        results.innerHTML = '';
+        count.textContent = 'Start typing to search, or browse the main pages below.';
+        return;
+      }
+      try {
+        pagefind ??= import(/* @vite-ignore */ indexPath);
+        const search = await (await pagefind).debouncedSearch(q);
+        if (!search) return; // superseded by a newer query
+        const hits = await Promise.all(search.results.slice(0, 40).map((r) => r.data()));
+        if (input.value.trim() !== q) return; // the box changed (or was cleared) while we were loading
+        count.textContent = `${search.results.length} ${search.results.length === 1 ? 'page' : 'pages'} found`;
+        results.innerHTML = hits.length
+          ? hits.map((h) => `<a class="res" href="${esc(h.url)}"><span class="res-t">${esc(h.meta.title ?? h.url)}</span><span class="res-s">${h.excerpt}</span></a>`).join('')
+          : '<p style="margin:0;padding:20px;background:#F2EFE8;border-radius:10px">Nothing matched. Try a shorter word, or <a href="/benefice/contact.html">ask us</a>.</p>';
+      } catch {
+        count.textContent = 'Search is unavailable right now. Try the sitemap below.';
+      }
+    }
+
+    input.addEventListener('input', run);
+    document.getElementById('search-form')!.addEventListener('submit', (e) => { e.preventDefault(); run(); });
+    const initial = new URLSearchParams(location.search).get('q');
+    if (initial) { input.value = initial; run(); }
+  </script>
 </BaseLayout>
-
-<script>
-  // Full-text search over every page, using the Pagefind index built after `astro build`.
-  type Result = { url: string; excerpt: string; meta: { title?: string } };
-  type Pagefind = { debouncedSearch: (q: string) => Promise<{ results: { data: () => Promise<Result> }[] } | null> };
-
-  const input = document.getElementById('q') as HTMLInputElement;
-  const count = document.getElementById('search-count')!;
-  const results = document.getElementById('search-results')!;
-  const indexPath = '/pagefind/pagefind.js';
-  let pagefind: Promise<Pagefind> | null = null;
-  const esc = (s: string) => s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
-
-  async function run() {
-    const q = input.value.trim();
-    if (!q) {
-      results.innerHTML = '';
-      count.textContent = 'Start typing to search, or browse the main pages below.';
-      return;
-    }
-    try {
-      pagefind ??= import(/* @vite-ignore */ indexPath);
-      const search = await (await pagefind).debouncedSearch(q);
-      if (!search) return; // superseded by a newer query
-      const hits = await Promise.all(search.results.slice(0, 40).map((r) => r.data()));
-      count.textContent = `${search.results.length} ${search.results.length === 1 ? 'page' : 'pages'} found`;
-      results.innerHTML = hits.length
-        ? hits.map((h) => `<a class="res" href="${esc(h.url)}"><span class="res-t">${esc(h.meta.title ?? h.url)}</span><span class="res-s">${h.excerpt}</span></a>`).join('')
-        : '<p style="margin:0;padding:20px;background:#F2EFE8;border-radius:10px">Nothing matched. Try a shorter word, or <a href="/benefice/contact.html">ask us</a>.</p>';
-    } catch {
-      count.textContent = 'Search is unavailable right now. Try the sitemap below.';
-    }
-  }
-
-  input.addEventListener('input', run);
-  document.getElementById('search-form')!.addEventListener('submit', (e) => { e.preventDefault(); run(); });
-  const initial = new URLSearchParams(location.search).get('q');
-  if (initial) { input.value = initial; run(); }
-</script>

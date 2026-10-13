@@ -1,0 +1,2 @@
+# Used only if the site is hosted on Apache (as the old site was).
+ErrorDocument 404 /404.html

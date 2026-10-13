@@ -61,6 +61,7 @@ export function navFor(url: string): NavKey {
 }
 
 /** Public URL for a migrated page id ("cowlinge/history/index" -> "/cowlinge/history/"). */
-export const urlForId = (id: string) => '/' + (id.endsWith('index') ? id.slice(0, -'index'.length) : `${id}.html`);
+export const isIndexId = (id: string) => id === 'index' || id.endsWith('/index');
+export const urlForId = (id: string) => '/' + (isIndexId(id) ? id.slice(0, -'index'.length) : `${id}.html`);
 
 export const tel = (n: string) => 'tel:' + n.replace(/\s/g, '');

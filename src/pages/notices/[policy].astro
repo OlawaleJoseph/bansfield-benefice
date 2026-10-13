@@ -10,7 +10,8 @@ export function getStaticPaths() {
   return POLICIES.map((p) => ({ params: { policy: p.id } }));
 }
 const { policy } = Astro.params;
-const entry = (await getEntry('pages', `notices/${policy}`))!;
+const entry = await getEntry('pages', `notices/${policy}`);
+if (!entry) throw new Error(`Missing src/content/pages/notices/${policy}.html`);
 const { title, description } = entry.data;
 ---
 <BaseLayout title={title} description={description}>
